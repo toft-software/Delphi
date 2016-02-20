@@ -1,0 +1,61 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BorlandProject>
+	<Transactions>
+    <Transaction>1899-12-30 00:00:00.000.577,C:\Users\Christian\Documents\RAD Studio\Projects\Vetmall\frmVMRabatter.pas=C:\Users\Christian\Documents\RAD Studio\Projects\Vetmall\frmAllVMRabatter.pas</Transaction>
+    <Transaction>1899-12-30 00:00:00.000.367,C:\Users\Christian\Documents\RAD Studio\Projects\Vetmall\frmVMRabatter.pas=C:\Users\Christian\Documents\RAD Studio\Projects\Vetmall\Unit2.pas</Transaction>
+    <Transaction>1899-12-30 00:00:00.000.794,=C:\Users\Christian\Documents\RAD Studio\Projects\Vetmall\clsManufacturer.pas</Transaction>
+    <Transaction>1899-12-30 00:00:00.000.093,=C:\Users\Christian\Documents\RAD Studio\Projects\Vetmall\Unit1.pas</Transaction>
+    <Transaction>1899-12-30 00:00:00.000.303,=C:\Users\Christian\Documents\RAD Studio\Projects\Vetmall\Unit1.pas</Transaction>
+    <Transaction>1899-12-30 00:00:00.000.241,C:\Users\Christian\Documents\RAD Studio\Projects\Vetmall\clsProduct.pas=C:\Users\Christian\Documents\RAD Studio\Projects\Vetmall\Unit1.pas</Transaction>
+    <Transaction>1899-12-30 00:00:00.000.224,C:\Users\Christian\Documents\RAD Studio\Projects\Project1.dproj=C:\Users\Christian\Documents\RAD Studio\Projects\VetMallJson.dproj</Transaction>
+    <Transaction>1899-12-30 00:00:00.000.632,=C:\Users\Christian\Documents\RAD Studio\Projects\Vetmall\frmSystemBesked.pas</Transaction>
+    <Transaction>1899-12-30 00:00:00.000.719,C:\Users\Christian\Documents\RAD Studio\Projects\Vetmall\frmMain.pas=C:\Users\Christian\Documents\RAD Studio\Projects\Vetmall\Mainform.pas</Transaction>
+    <Transaction>1899-12-30 00:00:00.000.356,=C:\Users\Christian\Documents\RAD Studio\Projects\Vetmall\Unit2.pas</Transaction>
+    <Transaction>1899-12-30 00:00:00.000.464,C:\Users\Christian\Documents\RAD Studio\Projects\Vetmall\frmRedigerCustomer.pas=C:\Users\Christian\Documents\RAD Studio\Projects\Vetmall\frmCustomer.pas</Transaction>
+    <Transaction>1899-12-30 00:00:00.000.395,C:\Users\Christian\Documents\RAD Studio\Projects\Vetmall\frmCustomer.pas=C:\Users\Christian\Documents\RAD Studio\Projects\Vetmall\Unit2.pas</Transaction>
+    <Transaction>1899-12-30 00:00:00.000.758,C:\Users\Christian\Documents\RAD Studio\Projects\Vetmall\Mainform.pas=C:\Users\Christian\Documents\RAD Studio\Projects\Vetmall\Unit1.pas</Transaction>
+    <Transaction>1899-12-30 00:00:00.000.758,C:\Users\Christian\Documents\RAD Studio\Projects\Vetmall\Mainform.dfm=C:\Users\Christian\Documents\RAD Studio\Projects\Vetmall\Unit1.dfm</Transaction>
+    <Transaction>1899-12-30 00:00:00.000.783,=C:\Users\Christian\Documents\RAD Studio\Projects\Vetmall\clsCustomerGroup.pas</Transaction>
+    <Transaction>1899-12-30 00:00:00.000.593,C:\Users\Christian\Documents\RAD Studio\Projects\Vetmall\Unit1.pas=C:\Users\Christian\Documents\RAD Studio\Projects\Vetmall\clsCustomersCustomergroups.pas</Transaction>
+    <Transaction>1899-12-30 00:00:00.000.498,C:\Users\Christian\Documents\RAD Studio\Projects\Vetmall\OpretCustomer.dfm=C:\Users\Christian\Documents\RAD Studio\Projects\Vetmall\frmOpretCustomer.dfm</Transaction>
+    <Transaction>1899-12-30 00:00:00.000.395,C:\Users\Christian\Documents\RAD Studio\Projects\Vetmall\frmCustomer.dfm=C:\Users\Christian\Documents\RAD Studio\Projects\Vetmall\Unit2.dfm</Transaction>
+    <Transaction>1899-12-30 00:00:00.000.498,C:\Users\Christian\Documents\RAD Studio\Projects\Vetmall\OpretCustomer.pas=C:\Users\Christian\Documents\RAD Studio\Projects\Vetmall\frmOpretCustomer.pas</Transaction>
+    <Transaction>1899-12-30 00:00:00.000.749,=C:\Users\Christian\Documents\RAD Studio\Projects\Vetmall\Unit1.pas</Transaction>
+    <Transaction>1899-12-30 00:00:00.000.334,C:\Users\Christian\Documents\RAD Studio\Projects\Vetmall\Unit1.pas=C:\Users\Christian\Documents\RAD Studio\Projects\Vetmall\clsvmDiscount.pas</Transaction>
+    <Transaction>1899-12-30 00:00:00.000.292,C:\Users\Christian\Documents\RAD Studio\Projects\Vetmall\Unit1.pas=C:\Users\Christian\Documents\RAD Studio\Projects\Vetmall\clsObjModel.pas</Transaction>
+    <Transaction>1899-12-30 00:00:00.000.140,=C:\Users\Christian\Documents\RAD Studio\Projects\Vetmall\Unit1.pas</Transaction>
+    <Transaction>1899-12-30 00:00:00.000.421,=C:\Users\Christian\Documents\RAD Studio\Projects\Vetmall\Unit1.pas</Transaction>
+    <Transaction>1899-12-30 00:00:00.000.213,=C:\Users\Christian\Documents\RAD Studio\Projects\Vetmall\Unit1.pas</Transaction>
+    <Transaction>1899-12-30 00:00:00.000.405,=C:\Users\Christian\Documents\RAD Studio\Projects\Vetmall\Unit1.pas</Transaction>
+    <Transaction>1899-12-30 00:00:00.000.815,=C:\Users\Christian\Documents\RAD Studio\Projects\Vetmall\Unit2.pas</Transaction>
+    <Transaction>1899-12-30 00:00:00.000.367,C:\Users\Christian\Documents\RAD Studio\Projects\Vetmall\frmVMRabatter.dfm=C:\Users\Christian\Documents\RAD Studio\Projects\Vetmall\Unit2.dfm</Transaction>
+    <Transaction>1899-12-30 00:00:00.000.577,C:\Users\Christian\Documents\RAD Studio\Projects\Vetmall\frmVMRabatter.dfm=C:\Users\Christian\Documents\RAD Studio\Projects\Vetmall\frmAllVMRabatter.dfm</Transaction>
+    <Transaction>1899-12-30 00:00:00.000.573,C:\Users\Christian\Documents\RAD Studio\Projects\Vetmall\Unit2.dfm=C:\Users\Christian\Documents\RAD Studio\Projects\Vetmall\frmOpretCustomerGroup.dfm</Transaction>
+    <Transaction>1899-12-30 00:00:00.000.464,C:\Users\Christian\Documents\RAD Studio\Projects\Vetmall\frmRedigerCustomer.dfm=C:\Users\Christian\Documents\RAD Studio\Projects\Vetmall\frmCustomer.dfm</Transaction>
+    <Transaction>1899-12-30 00:00:00.000.299,C:\Users\Christian\Documents\RAD Studio\Projects\Vetmall\frmRedigerProduct.pas=C:\Users\Christian\Documents\RAD Studio\Projects\Vetmall\Unit2.pas</Transaction>
+    <Transaction>1899-12-30 00:00:00.000.719,C:\Users\Christian\Documents\RAD Studio\Projects\Vetmall\frmMain.dfm=C:\Users\Christian\Documents\RAD Studio\Projects\Vetmall\Mainform.dfm</Transaction>
+    <Transaction>1899-12-30 00:00:00.000.299,C:\Users\Christian\Documents\RAD Studio\Projects\Vetmall\frmRedigerProduct.dfm=C:\Users\Christian\Documents\RAD Studio\Projects\Vetmall\Unit2.dfm</Transaction>
+    <Transaction>1899-12-30 00:00:00.000.777,C:\Users\Christian\Documents\RAD Studio\Projects\Vetmall\clsAddress.pas=C:\Users\Christian\Documents\RAD Studio\Projects\Vetmall\Unit1.pas</Transaction>
+    <Transaction>1899-12-30 00:00:00.000.939,C:\Users\Christian\Documents\RAD Studio\Projects\Vetmall\clsCategory.pas=C:\Users\Christian\Documents\RAD Studio\Projects\Vetmall\Unit1.pas</Transaction>
+    <Transaction>1899-12-30 00:00:00.000.982,=C:\Users\Christian\Documents\RAD Studio\Projects\Unit1.pas</Transaction>
+    <Transaction>1899-12-30 00:00:00.000.050,=C:\Users\Christian\Documents\RAD Studio\Projects\Vetmall\clsGenHlp.pas</Transaction>
+    <Transaction>1899-12-30 00:00:00.000.192,C:\Users\Christian\Documents\RAD Studio\Projects\Vetmall\Unit2.dfm=C:\Users\Christian\Documents\RAD Studio\Projects\Vetmall\frmAllProducts.dfm</Transaction>
+    <Transaction>1899-12-30 00:00:00.000.362,C:\Users\Christian\Documents\RAD Studio\Projects\Vetmall\Unit2.dfm=C:\Users\Christian\Documents\RAD Studio\Projects\Vetmall\frmAllCustomers.dfm</Transaction>
+    <Transaction>1899-12-30 00:00:00.000.542,C:\Users\Christian\Documents\RAD Studio\Projects\Vetmall\Unit2.dfm=C:\Users\Christian\Documents\RAD Studio\Projects\Vetmall\OpretCustomer.dfm</Transaction>
+    <Transaction>1899-12-30 00:00:00.000.864,=C:\Users\Christian\Documents\RAD Studio\Projects\Vetmall\Unit2.pas</Transaction>
+    <Transaction>1899-12-30 00:00:00.000.366,=C:\Users\Christian\Documents\RAD Studio\Projects\Vetmall\Unit2.pas</Transaction>
+    <Transaction>1899-12-30 00:00:00.000.748,=C:\Users\Christian\Documents\RAD Studio\Projects\Vetmall\Unit2.pas</Transaction>
+    <Transaction>1899-12-30 00:00:00.000.362,C:\Users\Christian\Documents\RAD Studio\Projects\Vetmall\Unit2.pas=C:\Users\Christian\Documents\RAD Studio\Projects\Vetmall\frmAllCustomers.pas</Transaction>
+    <Transaction>1899-12-30 00:00:00.000.646,=C:\Users\Christian\Documents\RAD Studio\Projects\Vetmall\Unit2.pas</Transaction>
+    <Transaction>1899-12-30 00:00:00.000.377,=C:\Users\Christian\Documents\RAD Studio\Projects\Vetmall\Unit2.pas</Transaction>
+    <Transaction>1899-12-30 00:00:00.000.016,=C:\Users\Christian\Documents\RAD Studio\Projects\Vetmall\Unit2.pas</Transaction>
+    <Transaction>1899-12-30 00:00:00.000.352,C:\Users\Christian\Documents\RAD Studio\Projects\Vetmall\Unit2.pas=C:\Users\Christian\Documents\RAD Studio\Projects\Vetmall\clsCustomer.pas</Transaction>
+    <Transaction>1899-12-30 00:00:00.000.192,C:\Users\Christian\Documents\RAD Studio\Projects\Vetmall\Unit2.pas=C:\Users\Christian\Documents\RAD Studio\Projects\Vetmall\frmAllProducts.pas</Transaction>
+    <Transaction>1899-12-30 00:00:00.000.573,C:\Users\Christian\Documents\RAD Studio\Projects\Vetmall\Unit2.pas=C:\Users\Christian\Documents\RAD Studio\Projects\Vetmall\frmOpretCustomerGroup.pas</Transaction>
+    <Transaction>1899-12-30 00:00:00.000.649,=C:\Users\Christian\Documents\RAD Studio\Projects\Vetmall\Unit2.pas</Transaction>
+    <Transaction>1899-12-30 00:00:00.000.542,C:\Users\Christian\Documents\RAD Studio\Projects\Vetmall\Unit2.pas=C:\Users\Christian\Documents\RAD Studio\Projects\Vetmall\OpretCustomer.pas</Transaction>
+    <Transaction>2015-08-28 10:31:20.190,=C:\Users\Christian\Documents\RAD Studio\Projects\Vetmall\Unit2.pas</Transaction>
+    <Transaction>2015-08-28 10:33:36.173,C:\Users\Christian\Documents\RAD Studio\Projects\Vetmall\frmRedigervmDiscounts.dfm=C:\Users\Christian\Documents\RAD Studio\Projects\Vetmall\Unit2.dfm</Transaction>
+    <Transaction>2015-08-28 10:33:36.173,C:\Users\Christian\Documents\RAD Studio\Projects\Vetmall\frmRedigervmDiscounts.pas=C:\Users\Christian\Documents\RAD Studio\Projects\Vetmall\Unit2.pas</Transaction>
+  </Transactions>
+</BorlandProject>

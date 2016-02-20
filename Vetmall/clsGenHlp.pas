@@ -1,0 +1,593 @@
+unit clsGenHlp;
+
+interface
+uses
+  Classes; //,cxCheckListBox;
+Const
+  Ugedage: Array[1..7] of string = ('Mandag','Tirsdag','Onsdag','Torsdag','Fredag','Lørdag','Søndag');
+
+Type
+
+  TReturStatus = (rsOk,rsAdvarsel,rsFejl,rsFatalFejl);
+
+  TFunktionsResultat = class
+  Private
+      pStatus: TReturStatus;
+      pBesked: String;
+  Public
+      Property Status: TReturStatus read pStatus write pStatus;
+      Property Besked: String read pBesked write pBesked;
+  End;
+
+  TJsonHelp = class
+  public
+    Class function TrimJsonResult(jsonstring : string;svc : string): string;
+    class function RemoveJsonCarriageReturn (jsonstring : string): string;
+    class function RemoveJsonTab (jsonstring : string): string;
+  end;
+//
+//  TIntEnc = class
+//  Public
+//     pInt: Integer;
+//     Constructor Create(anInt: Integer);
+//     Class Function FindIndexByInt(anInt: Integer;anObjList: TStrings): Integer;overload;
+//     Class Function FindIndexByInt(anInt: Integer;anObjList: TcxCheckListBoxItems): Integer;overload;
+//     Class Function FindIndexByIntExclude0(anInt: Integer;anObjList: TcxCheckListBoxItems): Integer;
+//     Class Function CorrectIndexExclude0(anOldIndex: Integer;anObjList: TcxCheckListBoxItems): Integer;
+//     Class Procedure FreeIntEncsInStrs(anObjList: TStrings);
+//     Class Procedure FreeIntEncsInCLB(anObjList: TcxCheckListBoxItems);
+//  End;
+//
+//  TStrEnc = class
+//  Public
+//     pStr: String;
+//     Constructor Create(aStr: String);
+//     Class Function FindIndexByStr(aStr: String;anObjList: TStrings): Integer;
+//     Class Procedure FreeStrEncsInStrs(anObjList: TStrings);
+//
+//  End;
+//
+//  TIntEncList = class(TList)
+//  Public
+//     Procedure AddInt(anInt: Integer);
+//     Function IntByIndex(anIndex: Integer): Integer;
+//     Function IntExists(anInt: Integer): Boolean;
+//     Function IndexByInt(anInt: Integer): Integer;
+//     Procedure ClearList;
+//     Destructor Destroy;override;
+//  End;
+//
+//  TTimeHelp = Class
+//  Public
+//    Class Function T1NotInT2(T1Start,T1Slut,T2Start,T2Slut: TDateTime): TDateTime;
+//    class Function T1InT2(T1Start,T1Slut,T2Start,T2Slut: TDateTime): TDateTime;
+//
+//    Class Function RoundToNearestXMinutes(aTime: TDateTime;
+//      minuteThreshold:Integer;roundForward: Boolean): TDateTime;
+//  End;
+//
+//  TTimeInterval = record
+//    pStart: TDateTime;
+//    pSlut: TDateTime;
+//  End;
+//
+//  TTimeEnc = class
+//  Public
+//    pTime: TDateTime;
+//    Constructor Create(aTime: TDateTime);
+//  end;
+//
+//  TTimeList = Class(TList)
+//  Private
+//    Procedure ClearList;
+//  Public
+//     Function LoadFromString(aStr: String): Boolean;
+//     Function FindClosestTimeBefore(aTime: TDateTime): TDateTime;
+//     Function FindClosestTimeAfter(aTime: TDateTime): TDateTime;
+//     Destructor Destroy; Override;
+//  End;
+//
+//  TStrHlp = class
+//  Public
+//    Class Function LeftFillStr(aStr: String;aFiller: String;aLength: Integer): String;
+//    Class Function RightFillStr(aStr: String;aFiller: String;aLength: Integer): String;
+//    Class Function AddToStr(aStr,aSubStr,aSep:string): String;
+//    Class Function IsValidFileName(aFileName: String): Boolean;
+//  End;
+
+
+implementation
+uses math,sysutils,dateUtils;
+
+class function TJsonHelp.TrimJsonResult (jsonstring : string;svc : string): string;
+begin
+  jsonstring := StringReplace(jsonstring,'{"'+svc+'Result":','',[rfReplaceAll,rfIgnoreCase]);
+  jsonstring := StringReplace(jsonstring,'}}','}',[rfReplaceAll,rfIgnoreCase]);
+  result := jsonstring;
+end;
+
+class function TJsonHelp.RemoveJsonCarriageReturn (jsonstring : string): string;
+begin
+  jsonstring:=StringReplace(jsonstring, #$D#$A,'',[rfReplaceAll] );
+  result := jsonstring;
+end;
+
+
+class function TJsonHelp.RemoveJsonTab (jsonstring : string): string;
+begin
+  jsonstring:=StringReplace(jsonstring, #9,'',[rfReplaceAll] );
+  result := jsonstring;
+end;
+
+
+
+{ TIntEnc }
+
+//class function TIntEnc.CorrectIndexExclude0(anOldIndex: Integer;
+//  anObjList: TcxCheckListBoxItems): Integer;
+//Var
+//  I: Integer;
+//begin
+//  result:=-1;
+//  for i:=0 to anOldIndex do
+//  Begin
+//    if TIntEnc(anObjList.Objects[i]).pInt<>0 then result:=result+1;
+//  end;
+//  if result=-1 then result:=0;
+//end;
+//
+//constructor TIntEnc.Create(anInt: Integer);
+//begin
+//  inherited Create;
+//  pInt:=anInt;
+//end;
+//
+//class function TIntEnc.FindIndexByInt(anInt: Integer;
+//  anObjList: TStrings): Integer;
+//Var
+//  i: Integer;
+//  Found: Boolean;
+//begin
+//  Result:=-1;
+//  Found:=false;
+//  i:=0;
+//  while (i<anObjList.Count) and (not Found) do
+//  Begin
+//     if anObjList.Objects[i]<>nil then
+//     Begin
+//      if TIntEnc(anObjList.Objects[i]).pInt=anInt then
+//      Begin
+//        Found:=true;
+//        Result:=i;
+//      End
+//      Else
+//      Begin
+//        i:=i+1;
+//      End;
+//     End
+//     Else
+//     Begin
+//       i:=i+1;
+//     End;
+//  End;
+//end;
+//
+//class function TIntEnc.FindIndexByInt(anInt: Integer;
+//  anObjList: TcxCheckListBoxItems): Integer;
+//Var
+//  i: Integer;
+//  Found: Boolean;
+//begin
+//  Result:=-1;
+//  Found:=false;
+//  i:=0;
+//  while (i<anObjList.Count) and (not Found) do
+//  Begin
+//     if anObjList.Objects[i]<>nil then
+//     Begin
+//      if TIntEnc(anObjList.Objects[i]).pInt=anInt then
+//      Begin
+//        Found:=true;
+//        Result:=i;
+//      End
+//      Else
+//      Begin
+//        i:=i+1;
+//      End;
+//     End
+//     Else
+//     Begin
+//       i:=i+1;
+//     End;
+//  End;
+//end;
+//
+//class function TIntEnc.FindIndexByIntExclude0(anInt: Integer;
+//  anObjList: TcxCheckListBoxItems): Integer;
+//Var
+//  i,j: Integer;
+//  Found: Boolean;
+//begin
+//  Result:=-1;
+//  Found:=false;
+//  i:=0;
+//  j:=0;
+//  while (i<anObjList.Count) and (not Found) do
+//  Begin
+//     if anObjList.Objects[i]<>nil then
+//     Begin
+//      if TIntEnc(anObjList.Objects[i]).pInt=anInt then
+//      Begin
+//        Found:=true;
+//        Result:=i-j;
+//      End
+//      Else
+//      Begin
+//        if TIntEnc(anObjList.Objects[i]).pInt=0 then j:=j+1;
+//        i:=i+1;
+//      End;
+//     End
+//     Else
+//     Begin
+//       i:=i+1;
+//     End;
+//  End;
+//end;
+//
+//class procedure TIntEnc.FreeIntEncsInCLB(anObjList: TcxCheckListBoxItems);
+//begin
+//  while anObjList.Count>0 do
+//  Begin
+//    try
+//      if anObjList.Objects[0] is TIntEnc then
+//      Begin
+//        TIntEnc(anObjList.Objects[0]).free;
+//      End;
+//    except
+//
+//    end;
+//    anObjList.Delete(0);
+//  End;
+//end;
+//
+//class procedure TIntEnc.FreeIntEncsInStrs(anObjList: TStrings);
+//begin
+//  while anObjList.Count>0 do
+//  Begin
+//    try
+//      if anObjList.Objects[0] is TIntEnc then
+//      Begin
+//        TIntEnc(anObjList.Objects[0]).free;
+//      End;
+//    except
+//
+//    end;
+//    anObjList.Delete(0);
+//  End;
+//end;
+//
+//{ TIntEncList }
+//
+//procedure TIntEncList.AddInt(anInt: Integer);
+//begin
+//  self.Add(TIntEnc.Create(anInt));
+//end;
+//
+//procedure TIntEncList.ClearList;
+//begin
+//  while self.Count>0 do
+//  Begin
+//     TIntEnc(items[0]).free;
+//     delete(0);
+//  End;
+//end;
+//
+//destructor TIntEncList.Destroy;
+//begin
+//  CLearList;
+//  inherited;
+//end;
+//
+//function TIntEncList.IndexByInt(anInt: Integer): Integer;
+//Var
+//  i: Integer;
+//  Found: Boolean;
+//begin
+//  i:=0;
+//  result:=-1;
+//  found:=false;
+//  while (i<self.Count) and (not found) do
+//  Begin
+//     if self.IntByIndex(i)=anInt then
+//     Begin
+//      found:=true;
+//      result:=i;
+//     end
+//     Else
+//     Begin
+//       i:=i+1;
+//     End;
+//  End;
+//end;
+//
+//function TIntEncList.IntByIndex(anIndex: Integer): Integer;
+//begin
+//  result:=TIntEnc(Items[anIndex]).pInt;
+//end;
+//
+//function TIntEncList.IntExists(anInt: Integer): Boolean;
+//Var
+//  i: Integer;
+//  Found: Boolean;
+//begin
+//  i:=0;
+//  found:=false;
+//  while (i<self.Count) and (not found) do
+//  Begin
+//     if self.IntByIndex(i)=anInt then
+//     Begin
+//      found:=true;
+//     end
+//     Else
+//     Begin
+//       i:=i+1;
+//     End;
+//  End;
+//  result:=found;
+//end;
+//
+//{ TStrEnc }
+//
+//constructor TStrEnc.Create(aStr: String);
+//begin
+//  inherited Create;
+//  self.pStr:=aStr;
+//end;
+//
+//class function TStrEnc.FindIndexByStr(aStr: String;
+//  anObjList: TStrings): Integer;
+//Var
+//  i: Integer;
+//  Found: Boolean;
+//begin
+//  Result:=-1;
+//  Found:=false;
+//  i:=0;
+//  while (i<anObjList.Count) and (not Found) do
+//  Begin
+//     if anObjList.Objects[i]<>nil then
+//     Begin
+//      if TStrEnc(anObjList.Objects[i]).pStr=aStr then
+//      Begin
+//        Found:=true;
+//        Result:=i;
+//      End
+//      Else
+//      Begin
+//        i:=i+1;
+//      End;
+//     End
+//     Else
+//     Begin
+//       i:=i+1;
+//     End;
+//  End;
+//end;
+//
+//class procedure TStrEnc.FreeStrEncsInStrs(anObjList: TStrings);
+//begin
+//  while anObjList.Count>0 do
+//  Begin
+//    try
+//      if anObjList.Objects[0] is TStrEnc then
+//      Begin
+//        TStrEnc(anObjList.Objects[0]).free;
+//      End;
+//    except
+//
+//    end;
+//    anObjList.Delete(0);
+//  End;
+//end;
+//
+//{ TTimeHelp }
+//
+//class function TTimeHelp.RoundToNearestXMinutes(aTime: TDateTime;
+//  minuteThreshold: Integer; roundForward: Boolean): TDateTime;
+//Var
+//  tmpH,tmpM,tmpS,tmpMS: Word;
+//begin
+//  DecodeTime(aTime,tmpH,tmpM,tmpS,tmpMS);
+//  result:=EncodeTime(tmpH,tmpM,0,0);
+//  while (MinuteOf(result) mod minuteThreshold) <> 0 do
+//  Begin
+//    if roundForward then
+//    Begin
+//      result:=IncMinute(result,1);
+//    End
+//    Else
+//    Begin
+//      result:=IncMinute(result,-1);
+//    End;
+//  End;
+//end;
+//
+//class function TTimeHelp.T1InT2(T1Start, T1Slut, T2Start,
+//  T2Slut: TDateTime): TDateTime;
+//begin
+//  result:=min(T1Slut,T2Slut)-Max(T1Start,T2Start);
+//  if result<0 then result:=0;
+//end;
+//
+//class function TTimeHelp.T1NotInT2(T1Start, T1Slut, T2Start,
+//  T2Slut: TDateTime): TDateTime;
+//begin
+//  result:=0;
+//  if T1Start<T2Start then
+//  Begin
+//    result:=result+(min(T2Start,T1Slut)-T1Start);
+//  end;
+//  if T1Slut>T2Slut then
+//  Begin
+//    result:=result+(T1Slut-max(T1Start,T2Slut));
+//  End;
+//
+//end;
+//
+//{ TStrHlp }
+//
+//class function TStrHlp.AddToStr(aStr, aSubStr, aSep: string): String;
+//begin
+//  if aStr='' then result:=aSubStr
+//  else Result:=aStr+aSep+aSubstr;
+//end;
+//
+//class function TStrHlp.IsValidFileName(aFileName: String): Boolean;
+//Var
+//  i: Integer;
+//begin
+//  Result:=true;
+//
+//  //Empty filename not allowed
+//  if Length(aFilename)=0 then result:=false;
+//
+//  //Leading or trailing spaces not allowed
+//  if Length(aFileName)<>Length(trim(aFileName)) then result:=false;
+//
+//  //Windows does not support the chars <,>,:,",/,\,|,?,*
+//  //So return false if they are in string
+//  if result then
+//  Begin
+//    for i:=1 to Length(aFileName) do
+//    Begin
+//      if aFileName[i] in ['<','>',':','"','/','\','|','?','*'] then
+//        result:=false;
+//    End;
+//  End;
+//end;
+//
+//class function TStrHlp.LeftFillStr(aStr, aFiller: String;
+//  aLength: Integer): String;
+//begin
+//  if aFiller<>'' then
+//  Begin
+//    Result:=aStr;
+//    while length(result)<aLength do
+//    Begin
+//      Result:=aFiller+Result;
+//    End;
+//  End;
+//end;
+//
+//class function TStrHlp.RightFillStr(aStr, aFiller: String;
+//  aLength: Integer): String;
+//begin
+//  if aFiller<>'' then
+//  Begin
+//    Result:=aStr;
+//    while length(result)<aLength do
+//    Begin
+//      Result:=Result+aFiller;
+//    End;
+//  End;
+//end;
+//
+//{ TTimeEnc }
+//
+//constructor TTimeEnc.Create(aTime: TDateTime);
+//begin
+//  inherited Create;
+//  self.pTime:=aTime;
+//end;
+//
+//{ TTimeList }
+//
+//function TTimeList.FindClosestTimeBefore(aTime: TDateTime): TDateTime;
+//Var
+//  tmpTime: TDateTime;
+//  i: Integer;
+//begin
+//  result:=StrToTime('00:00');
+//  aTime:=TimeOf(aTime);
+//  for i:=0 to self.Count-1 do
+//  Begin
+//    tmpTime:=TTimeEnc(self.Items[i]).pTime;
+//    if tmpTime<=aTime then
+//    Begin
+//      if SecondsBetween(aTime,tmpTime)<SecondsBetween(aTime,Result) then
+//      Begin
+//        result:=tmpTime;
+//      End;
+//    End;
+//  End;
+//end;
+//
+//function TTimeList.LoadFromString(aStr: String): Boolean;
+//Var
+//  tmpStr,timestr: String;
+//  tmpPos: Integer;
+//  tmpTime: TDateTime;
+//begin
+//  result:=true;
+//  //assume comma-separated list of hh:mm timestamps
+//  self.ClearList;
+//  tmpStr:=trim(aStr);
+//  while tmpStr<>'' do
+//  Begin
+//    tmpPos:=Pos(',',tmpStr);
+//    if tmpPos<1 then
+//    Begin
+//      timeStr:=tmpStr;
+//      tmpStr:='';
+//    End
+//    Else
+//    Begin
+//      timeStr:=Copy(tmpStr,1,tmpPos-1);
+//      tmpStr:=Copy(tmpStr,tmpPos+1,length(tmpStr)-tmpPos);
+//    End;
+//    try
+//      tmpTime:=TimeOf(StrToTime(trim(timeStr)));
+//      self.Add(TTimeEnc.Create(tmpTime));
+//    except
+//      result:=false;
+//    end;
+//  end;
+//  if self.Count=0 then result:=false;
+//end;
+//
+//function TTimeList.FindClosestTimeAfter(aTime: TDateTime): TDateTime;
+//Var
+//  tmpTime: TDateTime;
+//  i: Integer;
+//begin
+//  result:=StrToTime('23:59');
+//  aTime:=TimeOf(aTime);
+//  for i:=0 to self.Count-1 do
+//  Begin
+//    tmpTime:=TTimeEnc(self.Items[i]).pTime;
+//    if tmpTime>=aTime then
+//    Begin
+//      if SecondsBetween(tmpTime,aTime)<SecondsBetween(Result,aTime) then
+//      Begin
+//        result:=tmpTime;
+//      End;
+//    End;
+//  End;
+//end;
+//
+//procedure TTimeList.ClearList;
+//begin
+//  While self.Count>0 do
+//  Begin
+//    TTimeEnc(self.Items[0]).Free;
+//    self.delete(0);
+//  End;
+//end;
+//
+//destructor TTimeList.Destroy;
+//begin
+//  ClearList;
+//  inherited;
+//end;
+
+end.

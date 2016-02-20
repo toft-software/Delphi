@@ -1,0 +1,522 @@
+unit clsProduct;
+interface
+
+uses Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes,
+     clsCustomerGroup, clsGenHlp, clsObjModel, REST.JSON, clsCustomersCustomergroups, Datasnap.DBClient,
+      clsAddress, cxCheckComboBox, cxLookandFeelPainters, clsManufacturer, clsCategory;
+
+type
+
+
+
+
+  TProductdescription = class(TObject)
+  Private
+    fproduct_id : integer;
+    flanguage_id : integer;
+    fname : string;
+    fdescription : string;
+    fmeta_description : string;
+    fmeta_keyword : string;
+    ftag : string;
+  public
+    Property product_id: integer read fproduct_id write fproduct_id;
+    Property language_id: integer read flanguage_id write flanguage_id;
+    Property name: string read fname write fname;
+    Property description: string read fdescription write fdescription;
+    Property meta_description: string read fmeta_description write fmeta_description;
+    Property meta_keyword: string read fmeta_keyword write fmeta_keyword;
+    Property tag: string read ftag write ftag;
+  end;
+
+  test = class(TObject)
+  private
+    fid : integer;
+    fdate : TDAteTime;
+  end;
+
+  TProduct = class(TObject)
+  Private
+    fproduct_id : Integer;
+    fmodel : string;
+    fvmstrength : string;
+    fvmform : string;
+    fvmsoldto : string;
+    fvmpackage : string;
+    fsku : string;
+    fupc : string;
+    fean : string;
+    fjan : string;
+    fisbn : string;
+    fmpn : string;
+    flocation : string;
+    fquantity : integer;
+    fstock_status_id : integer;
+    fimage : string;
+    fmanufacturer : TManufacturer;
+    fshipping : boolean;
+    fprice : Double;
+    fpoints : integer;
+    ftax_class_id : integer;
+    fdate_available : TDateTime;
+    fweight : Double;
+    fweight_class_id : integer;
+    flength : Double;
+    fwidth : Double;
+    fheight : Double;
+    flength_class_id : integer;
+    fsubtract : boolean;
+    fminimum : integer;
+    fsort_order : integer;
+    fstatus : boolean;
+    fdate_added : TDateTime;
+    fdate_modified : TDateTime;
+    fviewed : integer;
+//
+    fproductdescription : TProductdescription;
+    fcategory : array of TCategory;
+    procedure FillObj(myProduct : TProduct);
+    function DeleteAllCategories: TFunktionsResultat;
+
+  Public
+
+    Property product_id: Integer read fproduct_id write fproduct_id;
+    Property model: string read fmodel write fmodel;
+    Property vmstrength: String read fvmstrength write fvmstrength;
+    Property vmform: String read fvmform write fvmform;
+    Property vmsoldto: string read fvmsoldto write fvmsoldto;
+    Property vmpackage: string read fvmpackage write fvmpackage;
+    Property sku: string read fsku write fsku;
+    Property upc: String read fupc write fupc;
+    Property ean: String read fean write fean;
+    Property jan: String read fjan write fjan;
+    Property isbn: String read fisbn write fisbn;
+    Property mpn: String read fmpn write fmpn;
+    Property location: String read flocation write flocation;
+    Property quantity: integer read fquantity write fquantity;
+    Property stock_status_id: integer read fstock_status_id write fstock_status_id;
+    Property image: String read fimage write fimage;
+    Property manufacturer: TManufacturer read fmanufacturer write fmanufacturer;
+    Property shipping: boolean read fshipping write fshipping;
+    Property price: double read fprice write fprice;
+    Property points: integer read fpoints write fpoints;
+    Property tax_class_id: integer read ftax_class_id write ftax_class_id;
+    Property date_available: TDateTime read fdate_available write fdate_available;
+    Property weight: double read fweight write fweight;
+    Property weight_class_id: integer read fweight_class_id write fweight_class_id;
+    Property length: double read flength write flength;
+    Property width: double read fwidth write fwidth;
+    Property height: double read fheight write fheight;
+    Property length_class_id: integer read flength_class_id write flength_class_id;
+    Property subtract: boolean read fsubtract write fsubtract;
+    Property minimum: integer read fminimum write fminimum;
+    Property sort_order: integer read fsort_order write fsort_order;
+    Property status: boolean read fstatus write fstatus;
+    Property date_added: TDatetime read fdate_added write fdate_added;
+    Property date_modified: TDateTime read fdate_modified write fdate_modified;
+    Property viewed: integer read fviewed write fviewed;
+    Property productdescription: TProductdescription read fproductdescription write fproductdescription;
+
+    function Load(product_id :integer): TFunktionsResultat;
+    constructor Create;
+    destructor Destroy;
+    function MemberOfCategory(myCategory : TCategory): boolean;
+    function Update(mycombocheckbox : TcxCheckComboBox): TFunktionsResultat;
+    function Remove: TFunktionsResultat;
+
+  end;
+
+
+
+
+  TProductListe = class
+  Private
+    fproductliste : array of TProduct;
+    pClientDataSet : TClientDataSet;
+  //  pClientDataSetCustom : TClientDataSet;
+  Public
+
+    constructor Create;
+    destructor Destroy; override;
+    function Load(manufacturerid: integer): TFunktionsResultat; overload;
+    function Load(manufacturerid: integer; categoryid : integer): TFunktionsResultat; overload;
+//    procedure BuildInternalClientDataSet;
+ //   procedure FillObj(myproductListe : TProductListe);
+//    function Load(manufacturerid: integer; customergroupid : integer): TFunktionsResultat; overload;
+    Property ClientDataSet: TClientDataSet read pClientDataSet write pClientDataSet;
+ //   Property ClientDataSetCustom: TClientDataSet read pClientDataSetCustom write pClientDataSetCustom;
+  end;
+
+implementation
+uses REST.Client, REST.Response.Adapter, REST.Types, db, Data.DBXJSON, DBXJSONReflect;
+
+constructor TProduct.Create;
+begin
+  inherited;
+  SetLength(self.fcategory,0);
+  self.productdescription := TProductdescription.Create;
+  self.fmanufacturer := TManufacturer.Create;
+end;
+
+destructor TProduct.Destroy;
+begin
+  if self.productdescription <> nil then
+    self.productdescription.Free;
+  if self.manufacturer <> nil then
+    self.manufacturer.Free;
+  inherited;
+end;
+
+function TProduct.Load(product_id :integer): TFunktionsResultat;
+var
+//  tmpProduct : TProduct;
+  svc : string;
+  RESTRequest1 : TRESTRequest;
+  RESTResponse1 : TRESTResponse;
+begin
+  RESTRequest1 := TRESTRequest.Create(FSModel.RESTClient1);
+  RESTResponse1 := TRESTResponse.Create(FSModel.RESTClient1);
+  RESTRequest1.Response := RESTResponse1;
+
+  result:=TFunktionsResultat.Create;
+  try
+  //  tmpProduct := TProduct.Create;
+    svc := 'GetProductFromID';
+    RESTRequest1.Resource := svc+'/'+IntToStr(FSModel.Manufacturer.Manufacturer_id)+'/'+IntToStr(product_id);
+
+    RESTRequest1.Execute;
+//    tmpProduct := TProduct(TJson.JsonToObject<TProduct>(TJsonHelp.TrimJsonResult(RESTResponse1.JSONValue.ToString, svc)));
+ //   self.FillObj(tmpProduct);
+ //   tmpProduct.Free;
+  except
+     on e:exception do
+     Begin
+      result.Status:=rsFejl;
+      result.Besked:=e.Message;
+     End;
+   End;
+   RESTRequest1.Free;
+   RESTResponse1.Free;
+end;
+
+procedure TProduct.FillObj(myProduct : TProduct);
+begin
+  self.fproduct_id := myProduct.fproduct_id;
+  self.fmodel := myProduct.fmodel;
+  self.price := myProduct.price;
+  self.fcategory := myProduct.fcategory;
+  self.fvmstrength := myProduct.fvmstrength;
+  self.vmform := myProduct.fvmform;
+  self.fvmpackage := myProduct.fvmpackage;
+  self.productdescription := myProduct.productdescription;
+  self.status := myProduct.status;
+end;
+
+
+
+
+function TProduct.DeleteAllCategories: TFunktionsResultat;
+var
+  tmpCustomer : TProduct;
+  svc : string;
+  RESTRequest1 : TRESTRequest;
+  RESTResponse1 : TRESTResponse;
+  I: Integer;
+begin
+  RESTRequest1 := TRESTRequest.Create(FSModel.RESTClient1);
+  RESTResponse1 := TRESTResponse.Create(FSModel.RESTClient1);
+  RESTRequest1.Response := RESTResponse1;
+  RESTRequest1.Method :=   TRESTRequestMethod.rmDELETE;
+  result:=TFunktionsResultat.Create;
+  try
+
+  svc :=  'RemoveAllCategoriesPrProduct';
+  RESTRequest1.Resource := svc+'/'+IntToStr(Self.fproduct_id);
+  RESTRequest1.Execute;
+
+  except
+     on e:exception do
+     Begin
+      result.Status:=rsFejl;
+      result.Besked:=e.Message;
+     End;
+   End;
+   RESTRequest1.Free;
+   RESTResponse1.Free;
+end;
+
+
+function TProduct.Update(mycombocheckbox : TcxCheckComboBox): TFunktionsResultat;
+var
+  svc : string;
+  RESTRequest1 : TRESTRequest;
+  RESTResponse1 : TRESTResponse;
+  I: Integer;
+  tmpFunkResult : TFunktionsResultat;
+  var aParam: TRESTRequestParameter;
+  t, ttt : test;
+  tt : TJSONObject;
+  mar : TJSONMarshal;
+begin
+   mar := TJSONMarshal.Create;
+  tt := TJSONObject.Create;
+ // tt.Value := TJson.ObjectToJsonString(t) ;
+
+
+  t := test.Create;
+  t.fdate := now;
+   tt := mar.Marshal(t) as TJSONObject;
+//  svc := TJson.ObjectToJsonString(t)
+
+
+
+  ttt := TJson.JsonToObject<test>('{"id":0,"date":42242.5829147106}');
+ // Tjson
+ // ttt := TJson.JsonToObject<test>('{"id":0,"date":"\/Date(1341314348237+0200)\/"}');
+
+
+  RESTRequest1 := TRESTRequest.Create(FSModel.RESTClient1);
+  RESTResponse1 := TRESTResponse.Create(FSModel.RESTClient1);
+  RESTRequest1.Response := RESTResponse1;
+  RESTRequest1.Method :=   TRESTRequestMethod.rmPOST;
+
+  result:=TFunktionsResultat.Create;
+  try
+  self.date_available := now;
+
+  aParam := RESTRequest1.Params.AddItem();
+  aParam.Value := TJson.ObjectToJsonString(self);
+  aParam.Value:=TJsonHelp.RemoveJsonCarriageReturn(aParam.Value);
+  aParam.ContentType := ctAPPLICATION_JSON;
+  if (self.product_id=0) then
+      svc := 'InsertProduct'
+  else
+      svc := 'UpdateProduct';
+  RESTRequest1.Resource := svc;
+  RESTRequest1.Execute;
+
+  if svc = 'InsertProduct' then
+    self.product_id := StrToInt(RESTResponse1.Content);
+
+
+  tmpFunkResult := self.DeleteAllCategories;
+  if tmpFunkResult.Status = rsOk then
+  begin
+    tmpFunkResult.Free;
+    svc :=  'InsertCategorytoProduct';
+    if mycombocheckbox.Properties.Items.Count > 0 then
+    begin
+      for I := 0 to mycombocheckbox.Properties.Items.Count -1 do
+      begin
+        if mycombocheckbox.States[i] = TcxCheckBoxState.cbsChecked then
+        begin
+          RESTRequest1.Method :=   TRESTRequestMethod.rmPUT;
+          RESTRequest1.Resource := svc+'/'+IntToStr(self.fproduct_id)  +'/'+ IntToStr(mycombocheckbox.Properties.Items[i].tag);
+          RESTRequest1.Execute;
+        end;
+      end;
+    end;
+  end;
+  except
+     on e:exception do
+     Begin
+      result.Status:=rsFejl;
+      result.Besked:=e.Message;
+     End;
+   End;
+   RESTRequest1.Free;
+   RESTResponse1.Free;
+end;
+
+function TProduct.Remove: TFunktionsResultat;
+var
+  svc : string;
+  RESTRequest1 : TRESTRequest;
+  RESTResponse1 : TRESTResponse;
+begin
+  RESTRequest1 := TRESTRequest.Create(FSModel.RESTClient1);
+  RESTResponse1 := TRESTResponse.Create(FSModel.RESTClient1);
+  RESTRequest1.Response := RESTResponse1;
+
+  result:=TFunktionsResultat.Create;
+  try
+    svc := 'RemoveProduct';
+    RESTRequest1.Method := TRESTRequestMethod.rmDELETE;
+    RESTRequest1.Resource := svc+'/'+IntToStr(self.fproduct_id);
+    RESTRequest1.Execute;
+  except
+     on e:exception do
+     Begin
+      result.Status:=rsFejl;
+      result.Besked:=e.Message;
+     End;
+   End;
+   RESTRequest1.Free;
+   RESTResponse1.Free;
+end;
+
+function TProduct.MemberofCategory(myCategory : TCategory): boolean;
+var
+  idx : integer;
+  tmpCategory : TCategory;
+begin
+  Result := false;
+//
+  for idx := 0 to High(fcategory)  do
+  begin
+    tmpCategory := TCategory(self.fcategory[idx]);
+
+    if tmpCategory.category_id = myCategory.category_id then
+    begin
+      result := true;
+      break;
+    end;
+  end;
+end;
+
+constructor TProductListe.Create;
+begin
+  inherited;
+  self.pClientDataSet := TClientDataSet.Create(nil);
+//  self.pClientDataSetCustom := TClientDataSet.Create(nil);
+//  self.pClientDataSetCustom.FieldDefs.Add('productId', ftInteger, 0, true);
+//  self.pClientDataSetCustom.FieldDefs.Add('varenr', ftString, 30, false);
+//  self.pClientDataSetCustom.FieldDefs.Add('varenavn', ftString, 30, false);
+//  self.pClientDataSetCustom.FieldDefs.Add('vmstrength', ftString, 30, false);
+//  self.pClientDataSetCustom.FieldDefs.Add('vmform', ftString, 30, false);
+//  self.pClientDataSetCustom.FieldDefs.Add('vmpackage', ftString, 30, false);
+//  self.pClientDataSetCustom.CreateDataSet;
+//  self.pClientDataSetCustom.Active:=true;
+end;
+
+destructor TProductListe.Destroy;
+begin
+  self.pClientDataSet.Free;
+//  self.pClientDataSetCustom.Free;
+
+
+  inherited;
+end;
+
+procedure TProductListe.FillObj(myproductListe : TProductListe);
+begin
+  self.fproductliste := myproductListe.fproductliste;
+end;
+
+
+procedure TProductListe.BuildInternalClientDataSet;
+var
+  tmpProduct : TProduct;
+  i : integer;
+begin
+//  if self.ClientDataSet.Active then
+//  begin
+//    if self.ClientDataSet.RecordCount>0 then
+//    begin
+//      for I := 0 to ClientDataSet.RecordCount - 1 do
+//      begin
+//        tmpProduct := TProduct(self.fproductliste[i]);
+//        if tmpProduct.productdescription <> nil then
+//          self.pClientDataSetCustom.AppendRecord([tmpProduct.fproduct_id,tmpProduct.model,tmpProduct.productdescription.name,tmpProduct.fvmstrength,tmpProduct.fvmform,tmpProduct.fvmpackage]);
+//      end;
+//    end;
+//  end;
+
+end;
+
+
+function TProductListe.Load(manufacturerid: integer; categoryid : integer): TFunktionsResultat;
+var
+  svc : string;
+  RESTRequest1 : TRESTRequest;
+  RESTResponse1 : TRESTResponse;
+  RestResponse1DataSetAdapter : TRESTResponseDataSetAdapter;
+  tmpProductListe : TProductListe;
+begin
+  RESTRequest1 := TRESTRequest.Create(FSModel.RESTClient1);
+  RESTResponse1 := TRESTResponse.Create(FSModel.RESTClient1);
+  RestResponse1DataSetAdapter := TRESTResponseDataSetAdapter.Create(FSModel.RESTClient1);
+  RestResponse1DataSetAdapter.Response := RESTResponse1;
+  RESTRequest1.Response := RESTResponse1;
+
+  result:=TFunktionsResultat.Create;
+  try
+
+    svc := 'GetProductListFromManufacturerIDCategoryID';
+    RestResponse1DataSetAdapter.Dataset :=  self.pClientDataSet;
+    RestResponse1DataSetAdapter.RootElement := svc+'Result.productliste';
+    RESTRequest1.Resource := svc+'/'+IntToStr(manufacturerid)+'/'+IntToStr(categoryid);
+    RESTRequest1.Execute;
+
+  //  tmpProductListe := TProductListe.Create;
+  //  tmpProductListe := TJson.JsonToObject<TProductListe>(TJsonHelp.TrimJsonResult(RESTResponse1.JSONValue.ToString, svc));
+
+  //  self.FillObj(tmpProductListe);
+    tmpProductListe.Free;
+  //  self.BuildInternalClientDataSet;
+  except
+     on e:exception do
+     Begin
+      result.Status:=rsFejl;
+      result.Besked:=e.Message;
+     End;
+   End;
+   RESTRequest1.Free;
+   RESTResponse1.Free;
+   RestResponse1DataSetAdapter.Free;
+end;
+
+
+
+
+
+function TProductListe.Load(manufacturerid: integer): TFunktionsresultat;
+var
+  svc : string;
+  RESTRequest1 : TRESTRequest;
+  RESTResponse1 : TRESTResponse;
+  RestResponse1DataSetAdapter : TRESTResponseDataSetAdapter;
+  tmpProductListe : TProductListe;
+  i : integer;
+  tmpProduct : TProduct;
+begin
+  RESTRequest1 := TRESTRequest.Create(FSModel.RESTClient1);
+  RESTResponse1 := TRESTResponse.Create(FSModel.RESTClient1);
+  RestResponse1DataSetAdapter := TRESTResponseDataSetAdapter.Create(FSModel.RESTClient1);
+  RestResponse1DataSetAdapter.Response := RESTResponse1;
+  RESTRequest1.Response := RESTResponse1;
+
+  result:=TFunktionsResultat.Create;
+  try
+
+    svc := 'GetProductListFromManufacturerID';
+    RestResponse1DataSetAdapter.Dataset :=  self.pClientDataSet;
+    RestResponse1DataSetAdapter.RootElement := svc+'Result.productliste';
+    RESTRequest1.Resource := svc+'/'+IntToStr(manufacturerid);
+    RESTRequest1.Execute;
+
+    tmpProductListe := TProductListe.Create;
+    tmpProductListe := TJson.JsonToObject<TProductListe>(TJsonHelp.TrimJsonResult(RESTResponse1.JSONValue.ToString, svc));
+
+    self.FillObj(tmpProductListe);
+    tmpProductListe.Free;
+    self.BuildInternalClientDataSet;
+
+  except
+     on e:exception do
+     Begin
+      result.Status:=rsFejl;
+      result.Besked:=e.Message;
+     End;
+   End;
+   RESTRequest1.Free;
+   RESTResponse1.Free;
+   RestResponse1DataSetAdapter.Free;
+end;
+
+
+
+
+
+
+end.

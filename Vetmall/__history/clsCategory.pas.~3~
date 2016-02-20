@@ -1,0 +1,73 @@
+unit clsCategory;
+interface
+
+uses Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes,
+     clsCustomerGroup, clsGenHlp, clsObjModel, REST.JSON, clsCustomersCustomergroups, Datasnap.DBClient,
+      clsAddress, cxCheckComboBox, cxLookandFeelPainters, clsManufacturer;
+
+type
+
+
+  TCategorydescription = class(TObject)
+  Private
+    fcategory_id : integer;
+    flanguage_id : integer;
+    fname : string;
+    fdescription : string;
+    fmeta_description : string;
+    fmeta_keyword : string;
+  public
+    Property category_id: integer read fcategory_id write fcategory_id;
+    Property language_id: integer read flanguage_id write flanguage_id;
+    Property name: string read fname write fname;
+    Property description: string read fdescription write fdescription;
+    Property meta_description: string read fmeta_description write fmeta_description;
+    Property meta_keyword: string read fmeta_keyword write fmeta_keyword;
+  end;
+
+  TCategory = class(TObject)
+  Private
+    fcategory_id : integer;
+    fimage : string;
+    fparent_id : integer;
+    ftop : boolean;
+    fcolumn : integer;
+    fsort_order : integer;
+    fstatus : boolean;
+    fdate_added : TDateTime;
+    fdate_modified : TDateTime;
+    fcategorydescription : TCategoryDescription ;
+  public
+    Property category_id: integer read fcategory_id write fcategory_id;
+    Property image: string read fimage write fimage;
+    Property parent_id: integer read fparent_id write fparent_id;
+    Property top: boolean read ftop write ftop;
+    Property column: integer read fcolumn write fcolumn;
+    Property sort_order: integer read fsort_order write fsort_order;
+    Property status: boolean read fstatus write fstatus;
+    Property date_added: TDateTime read fdate_added write fdate_added;
+    Property date_modified: TDateTime read fdate_modified write fdate_modified;
+    Property categorydescription: TCategoryDescription read fcategorydescription write fcategorydescription;
+    destructor Destroy; override;
+    constructor Create;
+  end;
+
+
+implementation
+
+destructor TCategory.Destroy;
+begin
+  self.fcategorydescription.Free;
+  inherited;
+end;
+
+constructor TCategory.Create;
+begin
+  inherited;
+  self.fcategorydescription:= T.Create;
+end;
+
+
+
+
+end.

@@ -1,0 +1,541 @@
+unit clsCustomer;
+interface
+
+uses Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes,
+     clsCustomerGroup, clsGenHlp, clsObjModel, REST.JSON, clsCustomersCustomergroups, Datasnap.DBClient,
+      clsAddress, cxCheckComboBox, cxLookandFeelPainters;
+
+type
+
+
+  TCustomer = class(TObject)
+  Private
+    fcustomer_id : Integer;
+    fpraksisnr : Integer;
+    fpraksisnavn : string;
+    faddress : string;
+    fzip : integer;
+    fcity : string;
+    fstore_id : Integer;
+    ffirstname : string;
+    flastname : string;
+    femail : string;
+    ftelephone : string;
+    ffax : string;
+    fpassword : string;
+    fsalt : string;
+    fcart : string;
+    fwishlist : string;
+    fnewsletter : boolean;
+    faddress_id : Integer;
+    fcustomerscustomergroups : array of TCustomersCustomergroups;
+    fip : string;
+    fstatus : boolean;
+    fapproved : boolean;
+    ftoken : string;
+    fdate_added : TDateTime;
+    faddresses : array of TAddress;
+    pactivestatus : boolean; //felt kommer fra relation
+    procedure FillObj(myCustomer : TCustomer);
+  Public
+
+    Property Customer_id: Integer read fcustomer_id write fcustomer_id;
+    Property Praksisnr: Integer read fpraksisnr write fpraksisnr;
+    Property Praksisnavn: String read fpraksisnavn write fpraksisnavn;
+    Property Address: String read faddress write faddress;
+    Property Zip: integer read fzip write fzip;
+    Property City: string read fcity write fcity;
+    Property Store_id: Integer read fstore_id write fstore_id;
+    Property Firstname: String read ffirstname write ffirstname;
+    Property Lastname: String read flastname write flastname;
+    Property Email: String read femail write femail;
+    Property Telephone: String read ftelephone write ftelephone;
+    Property Fax: String read ffax write ffax;
+    Property Password: String read fpassword write fpassword;
+    Property Salt: String read fsalt write fsalt;
+    Property Cart: String read fcart write fcart;
+    Property Wishlist: String read fwishlist write fwishlist;
+    Property Newsletter: boolean read fnewsletter write fnewsletter;
+    Property Address_id: Integer read faddress_id write faddress_id;
+ //   Property Customerscustomergroups: TCustomerGroupArray read fcustomerscustomergroups write fcustomerscustomergroups;
+    Property Ip: String read fip write fip;
+    Property Status: boolean read fstatus write fstatus;
+    Property Approved: boolean read fapproved write fapproved;
+    Property Token: string read ftoken write ftoken;
+    Property Date_added: TDateTime read fdate_added write fdate_added;
+  //   Property Addresses: array of TAddress read faddresses write faddresses;
+    Property Activestatus: boolean read pactivestatus write pactivestatus;
+    function Load(customer_id :integer; useManufacturer : bool = true): TFunktionsResultat;
+    constructor Create;
+    function MemberOfCustomerGroup(myCustomerGroup : TCustomerGroup): boolean;
+    function Update(mycombocheckbox : TcxCheckComboBox): TFunktionsResultat;
+    function RemoveFromManufacturer(manufacturer_id :integer): TFunktionsResultat;
+    function ConnectToManufacturer(manufacturer_id :integer): TFunktionsResultat;
+    function GetActiveStatus: TFunktionsResultat;
+  end;
+
+  TCustomerListe = class
+  Private
+    fcustomerliste : array of TCustomer;
+    pClientDataSet : TClientDataSet;
+  Public
+
+    constructor Create;
+    destructor Destroy; override;
+    function Load(manufacturerid: integer): TFunktionsResultat; overload;
+    function Load(KundeNavnOrPraksisnrSearch : string): TFunktionsresultat;  overload;
+    Property ClientDataSet: TClientDataSet read pClientDataSet write pClientDataSet;
+  end;
+
+
+
+
+implementation
+uses REST.Client, clsManufacturer, REST.Response.Adapter, REST.Types;
+
+
+
+constructor TCustomer.Create;
+begin
+  inherited;
+  SetLength(self.fcustomerscustomergroups,0);
+end;
+
+
+function TCustomer.Load(customer_id :integer; useManufacturer : bool): TFunktionsResultat;
+var
+  tmpCustomer : TCustomer;
+  svc : string;
+  RESTRequest1 : TRESTRequest;
+  RESTResponse1 : TRESTResponse;
+begin
+  RESTRequest1 := TRESTRequest.Create(FSModel.RESTClient1);
+  RESTResponse1 := TRESTResponse.Create(FSModel.RESTClient1);
+  RESTRequest1.Response := RESTResponse1;
+
+  result:=TFunktionsResultat.Create;
+  try
+    tmpCustomer := TCustomer.Create;
+    svc := 'GetCustomerFromID';
+    if useManufacturer then
+      RESTRequest1.Resource := svc+'/'+IntToStr(FSModel.Manufacturer.Manufacturer_id)+'/'+IntToStr(customer_id)
+    else
+      RESTRequest1.Resource := svc+'/'+IntToStr(0)+'/'+IntToStr(customer_id);
+
+    RESTRequest1.Execute;
+    tmpCustomer := TCustomer(TJson.JsonToObject<TCustomer>(TJsonHelp.TrimJsonResult(RESTResponse1.JSONValue.ToString, svc)));
+    self.FillObj(tmpCustomer);
+    tmpCustomer.Free;
+  except
+     on e:exception do
+     Begin
+      result.Status:=rsFejl;
+      result.Besked:=e.Message;
+     End;
+   End;
+   RESTRequest1.Free;
+   RESTResponse1.Free;
+end;
+
+function TCustomer.RemoveFromManufacturer(manufacturer_id :integer): TFunktionsResultat;
+var
+  svc : string;
+  RESTRequest1 : TRESTRequest;
+  RESTResponse1 : TRESTResponse;
+begin
+  RESTRequest1 := TRESTRequest.Create(FSModel.RESTClient1);
+  RESTResponse1 := TRESTResponse.Create(FSModel.RESTClient1);
+  RESTRequest1.Response := RESTResponse1;
+
+  result:=TFunktionsResultat.Create;
+  try
+    svc := 'RemoveCustomerFromManufacturer';
+    RESTRequest1.Method := TRESTRequestMethod.rmDELETE;
+    RESTRequest1.Resource := svc+'/'+IntToStr(manufacturer_id) + '/' + IntToStr(self.fcustomer_id);
+    RESTRequest1.Execute;
+  except
+     on e:exception do
+     Begin
+      result := nil;
+      raise;
+     End;
+   End;
+   RESTRequest1.Free;
+   RESTResponse1.Free;
+end;
+
+function TCustomer.ConnectToManufacturer(manufacturer_id :integer): TFunktionsResultat;
+var
+  svc : string;
+  RESTRequest1 : TRESTRequest;
+  RESTResponse1 : TRESTResponse;
+begin
+  RESTRequest1 := TRESTRequest.Create(FSModel.RESTClient1);
+  RESTResponse1 := TRESTResponse.Create(FSModel.RESTClient1);
+  RESTRequest1.Response := RESTResponse1;
+
+  result:=TFunktionsResultat.Create;
+  try
+    svc := 'InsertCustomerManufacturer';
+    RESTRequest1.Method := TRESTRequestMethod.rmPUT;
+    RESTRequest1.Resource := svc+'/'+IntToStr(manufacturer_id) + '/' + IntToStr(self.fcustomer_id);
+    RESTRequest1.Execute;
+  except
+     on e:exception do
+     Begin
+      result.Status:=rsFejl;
+      result.Besked:=e.Message;
+     End;
+   End;
+   RESTRequest1.Free;
+   RESTResponse1.Free;
+end;
+
+
+
+
+
+
+function TCustomer.Update(mycombocheckbox : TcxCheckComboBox): TFunktionsResultat;
+var
+  tmpCustomer : TCustomer;
+  svc : string;
+  RESTRequest1 : TRESTRequest;
+  RESTResponse1 : TRESTResponse;
+  I: Integer;
+begin
+  RESTRequest1 := TRESTRequest.Create(FSModel.RESTClient1);
+  RESTResponse1 := TRESTResponse.Create(FSModel.RESTClient1);
+  RESTRequest1.Response := RESTResponse1;
+  RESTRequest1.Method :=   TRESTRequestMethod.rmPUT;
+  result:=TFunktionsResultat.Create;
+  try
+
+    svc :=  'SetActiveFlagOnCustomer';
+
+    RESTRequest1.Resource := svc+'/'+IntToStr(FSModel.Manufacturer.Manufacturer_id)  +'/'+  IntToStr(self.fcustomer_id)  +'/'+  IntToStr(Integer(self.pactivestatus));
+    RESTRequest1.Execute;
+
+    svc :=  'insertCustomerGrouptoCustomer';
+
+    if mycombocheckbox.Properties.Items.Count > 0 then
+    begin
+      for I := 0 to mycombocheckbox.Properties.Items.Count -1 do
+      begin
+        if mycombocheckbox.States[i] = TcxCheckBoxState.cbsChecked then
+        begin
+          RESTRequest1.Resource := svc+'/'+IntToStr(FSModel.Manufacturer.Manufacturer_id)  +'/'+IntToStr(fcustomer_id)  +'/'+  IntToStr(self.fpraksisnr)  +'/'+ IntToStr(mycombocheckbox.Properties.Items[i].tag);
+          RESTRequest1.Execute;
+        end;
+      end;
+    end;
+
+  except
+     on e:exception do
+     Begin
+      result.Status:=rsFejl;
+      result.Besked:=e.Message;
+     End;
+   End;
+   RESTRequest1.Free;
+   RESTResponse1.Free;
+end;
+
+function TCustomer.GetActiveStatus: TFunktionsResultat;
+var
+  tmpCustomer : TCustomer;
+  svc : string;
+  RESTRequest1 : TRESTRequest;
+  RESTResponse1 : TRESTResponse;
+  I: Integer;
+begin
+  RESTRequest1 := TRESTRequest.Create(FSModel.RESTClient1);
+  RESTResponse1 := TRESTResponse.Create(FSModel.RESTClient1);
+  RESTRequest1.Response := RESTResponse1;
+  RESTRequest1.Method :=   TRESTRequestMethod.rmGET;
+  result:=TFunktionsResultat.Create;
+  try
+
+    svc :=  'GetActiveFlagOnCustomer';
+
+    RESTRequest1.Resource := svc+'/'+IntToStr(FSModel.Manufacturer.Manufacturer_id)  +'/'+  IntToStr(self.fcustomer_id);
+    RESTRequest1.Execute;
+
+    if RESTResponse1.StatusCode = 200 then
+    begin
+      if pos('false', RESTResponse1.Content) > 0 then
+        self.pactivestatus := false
+      else
+        self.pactivestatus := true;
+    end;
+
+
+  except
+     on e:exception do
+     Begin
+      result.Status:=rsFejl;
+      result.Besked:=e.Message;
+     End;
+   End;
+   RESTRequest1.Free;
+   RESTResponse1.Free;
+end;
+
+function TCustomer.MemberOfCustomerGroup(myCustomerGroup : TCustomerGroup): boolean;
+var
+  idx : integer;
+  tmpCustomerGroupDesc : TCustomerGroupDescription;
+begin
+  Result := false;
+  for idx:= 0 to Length(self.fcustomerscustomergroups) - 1 do
+  begin
+    tmpCustomerGroupDesc := TCustomerGroupDescription(self.fcustomerscustomergroups[idx].Customergroup.CustomerGroupDescription);
+
+    if tmpCustomerGroupDesc.Customer_group_id = myCustomerGroup.Customer_group_id then
+    begin
+      result := true;
+      break;
+    end;
+  end;
+end;
+
+
+procedure TCustomer.FillObj(myCustomer : TCustomer);
+begin
+  self.fcustomer_id := myCustomer.fcustomer_id;
+  self.fpraksisnr := myCustomer.fpraksisnr;
+  self.fpraksisnavn := myCustomer.fpraksisnavn;
+  self.faddress := myCustomer.faddress;
+  self.fzip := myCustomer.fzip;
+  self.fcity := myCustomer.fcity;
+  self.fstore_id := myCustomer.fstore_id;
+  self.ffirstname := myCustomer.ffirstname;
+  self.flastname := myCustomer.flastname;
+  self.femail := myCustomer.femail;
+  self.ftelephone := myCustomer.ftelephone;
+  self.ffax := myCustomer.ffax;
+  self.fpassword := myCustomer.fpassword;
+  self.fsalt := myCustomer.fsalt;
+  self.fcart := myCustomer.fwishlist;
+  self.fnewsletter := myCustomer.fnewsletter;
+  self.faddress_id := myCustomer.faddress_id;
+  self.fcustomerscustomergroups := myCustomer.fcustomerscustomergroups;
+  self.fip := myCustomer.fip;
+  self.fstatus := myCustomer.fstatus;
+  self.fapproved:= myCustomer.fapproved;
+  self.ftoken := myCustomer.Token;
+  self.fdate_added := myCustomer.fdate_added;
+  self.faddresses := myCustomer.faddresses;
+
+end;
+
+
+
+
+constructor TCustomerListe.Create;
+begin
+  inherited;
+  self.pClientDataSet := TClientDataSet.Create(nil);
+end;
+
+destructor TCustomerListe.Destroy;
+begin
+  self.pClientDataSet.Free;
+  inherited;
+end;
+
+function TCustomerListe.Load(manufacturerid: integer): TFunktionsresultat;
+var
+  t : TCustomerListe;
+  svc : string;
+  RESTRequest1 : TRESTRequest;
+  RESTResponse1 : TRESTResponse;
+  RestResponse1DataSetAdapter : TRESTResponseDataSetAdapter;
+begin
+  RESTRequest1 := TRESTRequest.Create(FSModel.RESTClient1);
+  RESTResponse1 := TRESTResponse.Create(FSModel.RESTClient1);
+  RestResponse1DataSetAdapter := TRESTResponseDataSetAdapter.Create(FSModel.RESTClient1);
+  RestResponse1DataSetAdapter.Response := RESTResponse1;
+  RESTRequest1.Response := RESTResponse1;
+
+  result:=TFunktionsResultat.Create;
+  try
+
+    svc := 'GetCustomerListFromManufacturerID';
+    RestResponse1DataSetAdapter.Dataset :=  self.pClientDataSet;
+    RestResponse1DataSetAdapter.RootElement := svc+'Result.customerliste';
+    RESTRequest1.Resource := svc+'/'+IntToStr(manufacturerid);
+    RESTRequest1.Execute;
+
+    self := TJson.JsonToObject<TCustomerListe>(TJsonHelp.TrimJsonResult(RESTResponse1.JSONValue.ToString, svc));
+  except
+     on e:exception do
+     Begin
+      result.Status:=rsFejl;
+      result.Besked:=e.Message;
+     End;
+   End;
+   RESTRequest1.Free;
+   RESTResponse1.Free;
+   RestResponse1DataSetAdapter.Free;
+end;
+
+function TCustomerListe.Load(KundeNavnOrPraksisnrSearch : string): TFunktionsresultat;
+var
+  t : TCustomerListe;
+  svc : string;
+  RESTRequest1 : TRESTRequest;
+  RESTResponse1 : TRESTResponse;
+  RestResponse1DataSetAdapter : TRESTResponseDataSetAdapter;
+begin
+  RESTRequest1 := TRESTRequest.Create(FSModel.RESTClient1);
+  RESTResponse1 := TRESTResponse.Create(FSModel.RESTClient1);
+  RestResponse1DataSetAdapter := TRESTResponseDataSetAdapter.Create(FSModel.RESTClient1);
+  RestResponse1DataSetAdapter.Response := RESTResponse1;
+  RESTRequest1.Response := RESTResponse1;
+
+  result:=TFunktionsResultat.Create;
+  try
+
+    svc := 'GetCustomerList';
+    RestResponse1DataSetAdapter.Dataset :=  self.pClientDataSet;
+    RestResponse1DataSetAdapter.RootElement := svc+'Result.customerliste';
+    RESTRequest1.Resource := svc+'/'+KundeNavnOrPraksisnrSearch;
+    RESTRequest1.Execute;
+
+    self := TJson.JsonToObject<TCustomerListe>(TJsonHelp.TrimJsonResult(RESTResponse1.JSONValue.ToString, svc));
+  except
+     on e:exception do
+     Begin
+      result.Status:=rsFejl;
+      result.Besked:=e.Message;
+     End;
+   End;
+   RESTRequest1.Free;
+   RESTResponse1.Free;
+   RestResponse1DataSetAdapter.Free;
+end;
+
+
+
+
+
+
+
+//function TCustomer.Load(customer_id :integer): TCustomer;
+//var
+//  d : TCustomer;
+//  svc : string;
+//  RESTRequest1 : TRESTRequest;
+//  RESTResponse1 : TRESTResponse;
+//  RestResponse1DataSetAdapter : TRESTResponseDataSetAdapter;
+//begin
+//  RESTRequest1 := TRESTRequest.Create(FSModel.RESTClient1);
+//  RESTResponse1 := TRESTResponse.Create(FSModel.RESTClient1);
+//  RestResponse1DataSetAdapter := TRESTResponseDataSetAdapter.Create(FSModel.RESTClient1);
+//  RestResponse1DataSetAdapter.Response := RESTResponse1;
+//  RESTRequest1.Response := RESTResponse1;
+//
+//
+//
+//   // RestResponse1DataSetAdapter.Dataset :=  self.pClientDataSet;
+//    RestResponse1DataSetAdapter.RootElement := svc+'Result.customerliste';
+//
+//  result:=TCustomer.Create;
+//  try
+//
+//    svc := 'GetCustomerFromID';
+//    FSModel.RESTRequest1.Resource := svc+'/'+IntToStr(customer_id);
+//    FSModel.RESTRequest1.Execute;
+//    result := TCustomer(TJson.JsonToObject<TCustomer>(TJsonHelp.TrimJsonResult(FSModel.RESTResponse1.JSONValue.ToString, svc)));
+//  except
+//     on e:exception do
+//     Begin
+//      result := nil;
+//      raise;
+//     End;
+//   End;
+//end;
+//
+
+//          FSModel.RESTRequest1.Resource := 'GetCustomerFromID/'+IntToStr(self.fcustomer_id);
+//   // FSModel.RESTRequest1.Params.AddItem('DeviceID', edt_twine_device.Text, TRESTRequestParameterKind.pkURLSEGMENT);
+//    FSModel.RESTRequest1.Execute;
+//  //  FSModel.RESTResponse1.JSONValue.ToString := 'a';//    a:=StringReplace(a,'\','',[rfReplaceAll,rfIgnoreCase]);
+//
+//
+//    if FSModel.RESTResponse1.GetSimpleValue('customer_id', LToken) then
+//      self.FCustomer_id := StrToInt(LToken);
+//
+//
+//
+//
+//
+//
+//    a:=FSModel.RESTResponse1.JSONValue.ToString;
+//  //  a:=StringReplace(a,'\','',[rfReplaceAll,rfIgnoreCase]);
+//    a := StringReplace(a,'{"GetCustomerFromIdResult":','',[rfReplaceAll,rfIgnoreCase]);
+//    a := StringReplace(a,'}}','}',[rfReplaceAll,rfIgnoreCase]);
+//
+//
+//  //  t := TCustomer.Create;
+//  //  b := TJson.ObjectToJsonString(t);
+//
+//        t := TJson.JsonToObject<TCustomer>(a);
+//
+//     //   "date_added":"2014-05-19T19:07:26"}');
+
+
+//   try
+//     pFSDBHandle.ReadQuery.SQL.Text:=
+//      'SELECT * FROM Chauffoerer WHERE Id='+IntToStr(self.pId)+';';
+//     pFSDBHandle.ReadQuery.ExecQuery;
+//     if not pFSDBHandle.ReadQuery.eof then
+//     Begin
+//        self.pNavn:=pFSDBHandle.ReadQuery.FieldByName('Navn').asstring;
+//        self.pTelefonNr:=pFSDBHandle.ReadQuery.FieldByName('TelefonNr').asString;
+//        self.pMobilNr:=pFSDBHandle.ReadQuery.FieldByName('MobilNr').asString;
+//        self.pKonto:=pFSDBHandle.ReadQuery.FieldByName('Konto').asstring;
+//
+//        self.Kontraktforhold:=pFSDBHandle.ReadQuery.FieldByName('Kontraktforhold').asstring;
+//        self.pModetidFra:=pFSDBHandle.ReadQuery.FieldByName('ModetidFra').AsTime;
+//        self.pModetidTil:=pFSDBHandle.ReadQuery.FieldByName('ModetidTil').AsTime;
+//
+//        self.pPauseType:=TChauffoerPauseType(pFSDBHandle.ReadQuery.FieldByName('PauseType').AsInteger);
+//        self.pPausePeriodeFra:=pFSDBHandle.ReadQuery.FieldByName('PausePeriodeFra').AsTime;
+//        self.pPausePeriodeTil:=pFSDBHandle.ReadQuery.FieldByName('PausePeriodeTil').AsTime;
+//        self.pKoeretidFoerPause:=pFSDBHandle.ReadQuery.FieldByName('KoeretidFoerPause').AsInteger;
+//        self.pPauseLaengde:=pFSDBHandle.ReadQuery.FieldByName('PauseLaengde').AsInteger;
+//        self.pEmail:=pFSDBHandle.ReadQuery.FieldByName('Email').asstring;
+//        self.pUdsendDagsProgram:=pFSDBHandle.ReadQuery.FieldByName('UdsendDagsProgram').AsBoolean;
+//
+//        result.Status:=rsOk;
+//     End
+//     Else
+//     Begin
+//        result.Status:=rsFejl;
+//        result.Besked:='Den valgte chauffør kunne ikke findes!';
+//     End;
+//   except
+//     on e:exception do
+//     Begin
+//      result.Status:=rsFejl;
+//      result.Besked:=e.Message;
+//     End;
+//   End;
+//   pFSDBHandle.ReadQuery.Close;
+
+
+
+
+
+
+
+
+
+
+
+
+end.
+
+

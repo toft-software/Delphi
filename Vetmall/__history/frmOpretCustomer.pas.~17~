@@ -1,0 +1,129 @@
+unit frmOpretCustomer;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, clsGenHlp, cxGraphics, cxControls,
+  cxLookAndFeels, cxLookAndFeelPainters, cxContainer, cxEdit, dxSkinsCore,
+  dxSkinBlack, dxSkinBlue, dxSkinBlueprint, dxSkinCaramel, dxSkinCoffee,
+  dxSkinDarkRoom, dxSkinDarkSide, dxSkinDevExpressDarkStyle,
+  dxSkinDevExpressStyle, dxSkinFoggy, dxSkinGlassOceans, dxSkinHighContrast,
+  dxSkiniMaginary, dxSkinLilian, dxSkinLiquidSky, dxSkinLondonLiquidSky,
+  dxSkinMcSkin, dxSkinMetropolis, dxSkinMetropolisDark, dxSkinMoneyTwins,
+  dxSkinOffice2007Black, dxSkinOffice2007Blue, dxSkinOffice2007Green,
+  dxSkinOffice2007Pink, dxSkinOffice2007Silver, dxSkinOffice2010Black,
+  dxSkinOffice2010Blue, dxSkinOffice2010Silver, dxSkinOffice2013DarkGray,
+  dxSkinOffice2013LightGray, dxSkinOffice2013White, dxSkinPumpkin, dxSkinSeven,
+  dxSkinSevenClassic, dxSkinSharp, dxSkinSharpPlus, dxSkinSilver,
+  dxSkinSpringTime, dxSkinStardust, dxSkinSummer2008, dxSkinTheAsphaltWorld,
+  dxSkinsDefaultPainters, dxSkinValentine, dxSkinVisualStudio2013Blue,
+  dxSkinVisualStudio2013Dark, dxSkinVisualStudio2013Light, dxSkinVS2010,
+  dxSkinWhiteprint, dxSkinXmas2008Blue, Vcl.Menus, cxStyles, dxSkinscxPCPainter,
+  cxCustomData, cxFilter, cxData, cxDataStorage, cxNavigator, Data.DB, cxDBData,
+  cxGridLevel, cxGridCustomTableView, cxGridTableView, cxGridDBTableView,
+  cxClasses, cxGridCustomView, cxGrid, System.Actions, Vcl.ActnList,
+  Vcl.StdCtrls, cxButtons, cxTextEdit, clsCustomerGroup, clsObjModel, cxgroupbox, clsCustomer;
+
+type
+  TformOpretCustomer = class(TForm)
+    cxGroupBox1: TcxGroupBox;
+    edPraksisnr: TcxTextEdit;
+    grKunder: TcxGrid;
+    grKunderDBTableView1: TcxGridDBTableView;
+    grKunderDBTableView1praksisnr: TcxGridDBColumn;
+    grKunderDBTableView1praksisnavn: TcxGridDBColumn;
+    grKunderDBTableView1adresse: TcxGridDBColumn;
+    grKunderDBTableView1postnr: TcxGridDBColumn;
+    grKunderDBTableView1by: TcxGridDBColumn;
+    grKunderDBTableView1telefon: TcxGridDBColumn;
+    grKunderLevel1: TcxGridLevel;
+    btnNulstil: TcxButton;
+    ActionList1: TActionList;
+    actSearch: TAction;
+    actRens: TAction;
+    dscustomer: TDataSource;
+    cxButton1: TcxButton;
+    actConnect: TAction;
+    procedure edPraksisnrPropertiesChange(Sender: TObject);
+    procedure actConnectExecute(Sender: TObject);
+    procedure actRensExecute(Sender: TObject);
+  private
+    { Private declarations }
+    pCustomerList : TCustomerListe;
+    procedure ClearCtrl;
+  public
+    { Public declarations }
+    procedure SetupAndShow;
+  end;
+
+var
+  formOpretCustomer: TformOpretCustomer;
+
+implementation
+
+{$R *.dfm}
+uses frmSystemBesked;
+
+procedure TformOpretCustomer.actConnectExecute(Sender: TObject);
+var
+  tmpCustomer : TCustomer;
+  tmpFunkResult : TFunktionsResultat;
+begin
+  if  (formSystemBesked.SystemSpoergsmaal('Ønsker du oprette '+ self.pCustomerList.ClientDataSet.FieldByName('praksisnavn').AsString)) then
+  begin
+    tmpCustomer := TCustomer.Create;
+    tmpFunkResult := tmpCustomer.Load(self.pCustomerList.ClientDataSet.FieldByName('Customer_id').AsInteger, false);
+    if tmpFunkResult.Status = rsOk then
+    begin
+      tmpFunkResult.Free;
+      tmpFunkResult :=  tmpCustomer.ConnectToManufacturer(FSModel.Manufacturer.Manufacturer_id);
+      if tmpFunkResult.Status = rsOk then
+      begin
+        tmpFunkResult.Free;
+        tmpCustomer.Free;
+      end;
+    end;
+  end;
+end;
+
+procedure TformOpretCustomer.actRensExecute(Sender: TObject);
+begin
+  self.ClearCtrl;
+end;
+
+procedure TformOpretCustomer.edPraksisnrPropertiesChange(Sender: TObject);
+var
+  tmpFunkResult : TFunktionsResultat;
+begin
+  if edPraksisnr.Text <> '' then
+  begin
+    if self.pCustomerList <> nil then
+       self.pCustomerList.Free;
+    self.pCustomerList:= TCustomerListe.Create;
+    tmpFunkResult := self.pCustomerList.Load(edPraksisnr.Text);
+    if tmpFunkResult.Status = rsOk then
+    begin
+      tmpFunkResult.Free;
+      self.dscustomer.DataSet := self.pCustomerList.ClientDataSet;
+    end;
+
+  end;
+end;
+
+procedure TformOpretCustomer.ClearCtrl;
+begin
+  if self.pCustomerList<>nil then
+     FreeAndNil(self.pCustomerList);
+  self.edPraksisnr.Text := '';
+end;
+
+
+procedure TformOpretCustomer.SetupAndShow;
+begin
+  self.ShowModal;
+  if self.pCustomerList <> nil then
+    self.pCustomerList.Free;
+end;
+
+end.

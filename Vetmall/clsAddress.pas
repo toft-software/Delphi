@@ -1,0 +1,101 @@
+unit clsAddress;
+interface
+
+uses Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes,
+     clsCustomerGroup, clsGenHlp, clsObjModel, REST.JSON, clsCustomersCustomergroups, Datasnap.DBClient;
+
+type
+
+  TAddress = class
+  Private
+    fcustomer_id : Integer;
+    ffirstname : string;
+    flastname : string;
+    fcompany : string;
+    fcompany_id : string;
+    ftax_id : string;
+    faddress_1 : string;
+    faddress_2 : string;
+    fcity : string;
+    fpostcode : string;
+    fcountry_id : integer;
+    fzone_id : Integer;
+  Public
+
+    Property Customer_id: Integer read fcustomer_id write fcustomer_id;
+    Property Firstname: String read ffirstname write ffirstname;
+    Property Lastname: String read flastname write flastname;
+    Property Company: String read fcompany write fcompany;
+    Property Company_id: String read fcompany_id write fcompany_id;
+    Property Tax_id: String read ftax_id write ftax_id;
+    Property Address_1: String read faddress_1 write faddress_1;
+    Property Address_2: String read faddress_2 write faddress_2;
+    Property City: String read fcity write fcity;
+    Property Postcode: String read fpostcode write fpostcode;
+    Property Country_id: integer read fcountry_id write fcountry_id;
+    Property Zone_id: integer read fzone_id write fzone_id;
+
+  end;
+
+  TAddressListe = class
+  Private
+    faddressliste : array of TAddress;
+    pClientDataSet : TClientDataSet;
+  Public
+
+    constructor Create;
+    function Load(customerid: integer): TFunktionsResultat;
+    Property ClientDataSet: TClientDataSet read pClientDataSet write pClientDataSet;
+  end;
+implementation
+uses REST.Client, REST.Response.Adapter;
+
+
+constructor TAddressListe.Create;
+begin
+  inherited;
+    self.pClientDataSet := TClientDataSet.Create(nil);
+end;
+
+function TAddressListe.Load(customerid: integer): TFunktionsresultat;
+var
+  svc : string;
+  RESTRequest1 : TRESTRequest;
+  RESTResponse1 : TRESTResponse;
+  RestResponse1DataSetAdapter : TRESTResponseDataSetAdapter;
+begin
+  RESTRequest1 := TRESTRequest.Create(FSModel.RESTClient1);
+  RESTResponse1 := TRESTResponse.Create(FSModel.RESTClient1);
+  RestResponse1DataSetAdapter := TRESTResponseDataSetAdapter.Create(FSModel.RESTClient1);
+  RestResponse1DataSetAdapter.Response := RESTResponse1;
+  RESTRequest1.Response := RESTResponse1;
+
+  result:=TFunktionsResultat.Create;
+  try
+
+    svc := 'GetAddressListFromCustomerID';
+    RestResponse1DataSetAdapter.Dataset :=  self.pClientDataSet;
+    RestResponse1DataSetAdapter.RootElement := svc+'Result.addressliste';
+    RESTRequest1.Resource := svc+'/'+IntToStr(customerid);
+    RESTRequest1.Execute;
+
+    self := TJson.JsonToObject<TAddressListe>(TJsonHelp.TrimJsonResult(RESTResponse1.JSONValue.ToString, svc));
+  except
+     on e:exception do
+     Begin
+      result.Status:=rsFejl;
+      result.Besked:=e.Message;
+     End;
+   End;
+   RESTRequest1.Free;
+   RESTResponse1.Free;
+   RestResponse1DataSetAdapter.Free;
+end;
+
+
+
+end.
+
+
+
+

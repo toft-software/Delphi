@@ -1,0 +1,106 @@
+unit frmCustomer;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, cxGraphics, cxControls, cxLookAndFeels,
+  cxLookAndFeelPainters, cxContainer, cxEdit, dxSkinsCore, dxSkinBlack,
+  dxSkinBlue, dxSkinBlueprint, dxSkinCaramel, dxSkinCoffee, dxSkinDarkRoom,
+  dxSkinDarkSide, dxSkinDevExpressDarkStyle, dxSkinDevExpressStyle, dxSkinFoggy,
+  dxSkinGlassOceans, dxSkinHighContrast, dxSkiniMaginary, dxSkinLilian,
+  dxSkinLiquidSky, dxSkinLondonLiquidSky, dxSkinMcSkin, dxSkinMetropolis,
+  dxSkinMetropolisDark, dxSkinMoneyTwins, dxSkinOffice2007Black,
+  dxSkinOffice2007Blue, dxSkinOffice2007Green, dxSkinOffice2007Pink,
+  dxSkinOffice2007Silver, dxSkinOffice2010Black, dxSkinOffice2010Blue,
+  dxSkinOffice2010Silver, dxSkinOffice2013DarkGray, dxSkinOffice2013LightGray,
+  dxSkinOffice2013White, dxSkinPumpkin, dxSkinSeven, dxSkinSevenClassic,
+  dxSkinSharp, dxSkinSharpPlus, dxSkinSilver, dxSkinSpringTime, dxSkinStardust,
+  dxSkinSummer2008, dxSkinTheAsphaltWorld, dxSkinsDefaultPainters,
+  dxSkinValentine, dxSkinVisualStudio2013Blue, dxSkinVisualStudio2013Dark,
+  dxSkinVisualStudio2013Light, dxSkinVS2010, dxSkinWhiteprint,
+  dxSkinXmas2008Blue, dxSkinscxPCPainter, dxBarBuiltInMenu, cxStyles,
+  cxCustomData, cxFilter, cxData, cxDataStorage, cxNavigator, Data.DB, cxDBData,
+  cxGridLevel, cxClasses, cxGridCustomView, cxGridCustomTableView,
+  cxGridTableView, cxGridDBTableView, cxGrid, cxPC, cxLabel, cxTextEdit,
+  Vcl.Menus, System.Actions, Vcl.ActnList, Vcl.StdCtrls, cxButtons;
+
+type
+  TformRedigerKunde = class(TForm)
+    edPraksisnr: TcxTextEdit;
+    edPraksisnavn: TcxTextEdit;
+    cxTextEdit3: TcxTextEdit;
+    cxLabel1: TcxLabel;
+    cxLabel2: TcxLabel;
+    cxLabel3: TcxLabel;
+    cxLabel4: TcxLabel;
+    cxLabel5: TcxLabel;
+    cxLabel6: TcxLabel;
+    edTlf: TcxTextEdit;
+    edFax: TcxTextEdit;
+    edEmail: TcxTextEdit;
+    cxPageControl1: TcxPageControl;
+    cxTabLevAdresser: TcxTabSheet;
+    cxTabNoter: TcxTabSheet;
+    cxButAktiver: TcxButton;
+    cxButDeaktiv: TcxButton;
+    cxButton1: TcxButton;
+    cxButton2: TcxButton;
+    ActionList1: TActionList;
+    ActAktiver: TAction;
+    ActDeaktiver: TAction;
+    ActGemLuk: TAction;
+    ActLuk: TAction;
+    cxGrid1: TcxGrid;
+    cxGrid1DBTableView1: TcxGridDBTableView;
+    cxGrid1Level1: TcxGridLevel;
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+    procedure SetupAndShow(etKundeId: Integer);
+  end;
+
+var
+  formRedigerKunde: TformRedigerKunde;
+
+implementation
+
+{$R *.dfm}
+procedure TformRedigerKunde.SetupAndShow(etKundeId: Integer);
+//Var
+//  tmpFR: TFunktionsResultat;
+begin
+//   self.pVogn:=Tvogn.Create(FSModel.DBHandle);
+//   self.pVogn.Id:=etVognId;
+//   if self.pVogn.Id<>0 then
+//   Begin
+//      tmpFR:=self.pVogn.Load;
+//      tmpFR.Free;
+//   End;
+//   UpdateCtrls;
+//   if (self.pVogn.Id=0) and (lbVogne.Count>0) then
+//   Begin
+//      lbVogne.ItemIndex:=0;
+//      lbVogneClick(self);
+//   End;
+//   pcVogn.ActivePage:=shtStamdata;
+//   shtAutoPlan.TabVisible:=FSModel.Indstillinger.BrugAutoPlan;
+
+   self.ShowModal;
+//   if assigned(self.pVogn) then
+//   Begin
+//      if self.pVogn.id<>0 then
+//      Begin
+//        GemVogn;
+//      End;
+//      FreeAndNil(self.PVogn);
+//   End;
+//   TIntEnc.FreeIntEncsInStrs(lbVogne.Items);
+end;
+
+
+
+
+
+end.

@@ -1,0 +1,268 @@
+unit frmRedigerProduct;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, cxGraphics, cxControls, cxLookAndFeels,
+  cxLookAndFeelPainters, cxContainer, cxEdit, dxSkinsCore, dxSkinBlack,
+  dxSkinBlue, dxSkinBlueprint, dxSkinCaramel, dxSkinCoffee, dxSkinDarkRoom,
+  dxSkinDarkSide, dxSkinDevExpressDarkStyle, dxSkinDevExpressStyle, dxSkinFoggy,
+  dxSkinGlassOceans, dxSkinHighContrast, dxSkiniMaginary, dxSkinLilian,
+  dxSkinLiquidSky, dxSkinLondonLiquidSky, dxSkinMcSkin, dxSkinMetropolis,
+  dxSkinMetropolisDark, dxSkinMoneyTwins, dxSkinOffice2007Black,
+  dxSkinOffice2007Blue, dxSkinOffice2007Green, dxSkinOffice2007Pink,
+  dxSkinOffice2007Silver, dxSkinOffice2010Black, dxSkinOffice2010Blue,
+  dxSkinOffice2010Silver, dxSkinOffice2013DarkGray, dxSkinOffice2013LightGray,
+  dxSkinOffice2013White, dxSkinPumpkin, dxSkinSeven, dxSkinSevenClassic,
+  dxSkinSharp, dxSkinSharpPlus, dxSkinSilver, dxSkinSpringTime, dxSkinStardust,
+  dxSkinSummer2008, dxSkinTheAsphaltWorld, dxSkinsDefaultPainters,
+  dxSkinValentine, dxSkinVisualStudio2013Blue, dxSkinVisualStudio2013Dark,
+  dxSkinVisualStudio2013Light, dxSkinVS2010, dxSkinWhiteprint,
+  dxSkinXmas2008Blue, dxSkinscxPCPainter, dxBarBuiltInMenu, cxStyles,
+  cxCustomData, cxFilter, cxData, cxDataStorage, cxNavigator, Data.DB, cxDBData,
+  cxGridLevel, cxClasses, cxGridCustomView, cxGridCustomTableView,
+  cxGridTableView, cxGridDBTableView, cxGrid, cxPC, cxLabel, cxTextEdit,
+  Vcl.Menus, System.Actions, Vcl.ActnList, Vcl.StdCtrls, cxButtons, clsCustomer, clsCustomerGroup, clsAddress,
+  cxCheckBox, cxMaskEdit, cxDropDownEdit, cxCheckComboBox, clsProduct, clsCategory,
+  System.TypInfo, Soap.WebServExp, Soap.WSDLBind, Xml.XMLSchema, Soap.WSDLPub,
+  IWVCLComponent, IWBaseLayoutComponent, IWBaseContainerLayout,
+  IWContainerLayout, IWLayoutMgrHTML, cxMemo, Vcl.ExtActns, Vcl.StdActns,
+  Vcl.ComCtrls, LMDRTFBase, LMDRTFRichEdit, LMDRTFFontComboBox, Vcl.ToolWin,
+  LMDRTFActions, Vcl.ImgList;
+
+type
+  TFormRedigerProduct = class(TForm)
+    edVarenr: TcxTextEdit;
+    cxLabel1: TcxLabel;
+    cxLabel2: TcxLabel;
+    edVarenavn: TcxTextEdit;
+    edPris: TcxTextEdit;
+    cxLabel5: TcxLabel;
+    cxLabel7: TcxLabel;
+    cxCheckCb: TcxCheckComboBox;
+    cxLabel6: TcxLabel;
+    cxLabel4: TcxLabel;
+    edPackage: TcxTextEdit;
+    edForm: TcxTextEdit;
+    edStrength: TcxTextEdit;
+    cxLabel3: TcxLabel;
+    ActionList1: TActionList;
+    ActAktiver: TAction;
+    ActDeaktiver: TAction;
+    ActGemLuk: TAction;
+    ActLuk: TAction;
+    dscustomer: TDataSource;
+    btnLuk: TcxButton;
+    cxButton2: TcxButton;
+    cxButAktiver: TcxButton;
+    cxButDeaktiv: TcxButton;
+    cxButton1: TcxButton;
+    RichEditUnderline1: TRichEditUnderline;
+    RichEditUnderline2: TRichEditUnderline;
+    RichEditItalic1: TRichEditItalic;
+    RichEditBold1: TRichEditBold;
+    Action1: TAction;
+    ActionList2: TActionList;
+    ImageList2: TImageList;
+    LMDRichEditTextBold1: TLMDRichEditTextBold;
+    LMDRichEditTextItalic1: TLMDRichEditTextItalic;
+    LMDRichEditTextUnderline1: TLMDRichEditTextUnderline;
+    cxPageControl1: TcxPageControl;
+    cxSheetHtmlEditor: TcxTabSheet;
+    LMDRichEdit1: TLMDRichEdit;
+    ToolBar2: TToolBar;
+    ToolButtonBold: TToolButton;
+    ToolButton2: TToolButton;
+    ToolButtonUnderline: TToolButton;
+    LMDRichEditTextSubscript1: TLMDRichEditTextSubscript;
+    LMDRichEditTextSuperscript1: TLMDRichEditTextSuperscript;
+    LMDRichEditUndo1: TLMDRichEditUndo;
+    LMDRichEditRedo1: TLMDRichEditRedo;
+    ToolButton1: TToolButton;
+    ToolButton3: TToolButton;
+    ToolButton4: TToolButton;
+    ToolButton5: TToolButton;
+    LMDRichEditNumberingArabicNumbers1: TLMDRichEditNumberingArabicNumbers;
+    LMDRichEditNumberingBullet1: TLMDRichEditNumberingBullet;
+    ToolButton6: TToolButton;
+    ToolButton7: TToolButton;
+    LMDRichEditParaAlignLeft1: TLMDRichEditParaAlignLeft;
+    LMDRichEditParaAlignRight1: TLMDRichEditParaAlignRight;
+    ToolButton8: TToolButton;
+    ToolButton9: TToolButton;
+    ToolButton10: TToolButton;
+    LMDRichEditParaAlignCenter1: TLMDRichEditParaAlignCenter;
+    LMDFontComboBox1: TLMDRichFontComboBox;
+    LMDFontSizeComboBox1: TLMDRichFontSizeComboBox;
+    cxTabSheet1: TcxTabSheet;
+    procedure ActGemLukExecute(Sender: TObject);
+    procedure ActAktiverExecute(Sender: TObject);
+    procedure ActDeaktiverExecute(Sender: TObject);
+    procedure ActLukExecute(Sender: TObject);
+  private
+    pProduct : TProduct;
+    pCategoryAllList : TCategoryListe;
+    procedure UpdateCtrls;
+    procedure OpdaterStatus;
+    { Private declarations }
+  public
+    { Public declarations }
+
+    procedure GemProduct;
+    procedure SetupAndShow(etProductId: Integer);
+  end;
+
+var
+  FormRedigerProduct: TFormRedigerProduct;
+
+implementation
+uses clsGenHlp, clsObjModel;
+
+{$R *.dfm}
+
+procedure TFormRedigerProduct.SetupAndShow(etProductId: Integer);
+Var
+  tmpFunkResult : TFunktionsResultat;
+begin
+  self.pProduct := TProduct.Create();
+
+  if etProductId>0 then
+  begin
+    tmpFunkResult :=self.pProduct.Load(etProductId);
+    if (tmpFunkResult.Status = rsOk) then
+    begin
+      tmpFunkResult.Free;
+    end;
+  end;
+
+//      self.pAddressList := TAddressListe.Create;
+//      tmpFunkResult:=self.pAddressList.Load(etKundeId);
+//      if tmpFunkResult.Status = rsOk then
+//      begin
+//        tmpFunkResult.Free;
+//        self.dsCustomer.DataSet := pAddressList.ClientDataSet;
+  UpdateCtrls;
+    //  end;
+  if self.ShowModal = mrOk then
+  begin
+    GemProduct;
+  end;
+    self.pProduct.Free;
+    self.pCategoryAllList.Free;
+     // pAddressList.Free;
+     // pCustomerGroupAll.Free;
+     // pCustomerGroupSelected.Free;
+   // end;
+ // end;
+end;
+
+
+procedure TFormRedigerProduct.GemProduct;
+var
+  tmpFunkResult : TFunktionsResultat;
+begin
+  self.pProduct.model := edVarenr.Text;
+  self.pProduct.productdescription.name := edVarenavn.Text;
+  self.pProduct.vmstrength := edStrength.Text;
+  self.pProduct.vmform := edForm.Text;
+  self.pProduct.vmpackage := edPackage.Text;
+  self.pProduct.productdescription.description := Self.LMDRichEdit1.Text;
+
+  tmpFunkResult:=self.pProduct.Update(cxCheckCb);
+  tmpFunkResult.Free;
+end;
+
+procedure TFormRedigerProduct.UpdateCtrls;
+var
+  i : integer;
+  tmpCategory : TCategory;
+  tmpFunkResult : TFunktionsResultat;
+begin
+
+  if self.pCategoryAllList <>nil then
+     freeandnil(self.pCategoryAllList);
+  self.pCategoryAllList:= TCategoryListe.Create;
+  tmpFunkResult := self.pCategoryAllList.Load;
+  if tmpFunkResult.Status = rsOk then
+  begin
+
+    self.cxCheckCb.Properties.Items.Clear;
+
+    if (pCategoryAllList.ClientDataSet.Active) then
+    begin
+      if self.pCategoryAllList.ClientDataSet.RecordCount>0 then
+      begin
+        for I := 0 to pCategoryAllList.ClientDataSet.RecordCount - 1 do
+        begin
+          tmpCategory := TCategory(self.pCategoryAllList.Categoryliste [i]);
+
+          with self.cxCheckCb.Properties.Items.Add do
+          begin
+            Description := tmpCategory.categorydescription.name;
+            tag := Integer(tmpCategory.category_id);
+
+            if (self.pProduct.MemberOfCategory(tmpCategory)) then
+              self.cxCheckCb.States[i] :=   TcxCheckBoxState.cbsChecked
+            else
+              self.cxCheckCb.States[i] :=   TcxCheckBoxState.cbsUnchecked;
+          end;
+        end;
+      end;
+    end;
+  end;
+  edVarenr.Text := self.pProduct.model;
+  if (pProduct.productdescription.name<> nil) then
+    edVarenavn.Text := self.pProduct.productdescription.name;
+  edPris.Text := FloatToStr(self.pProduct.price);
+  edPackage.Text := self.pProduct.vmpackage;
+  edForm.Text := self.pProduct.vmform;
+  edStrength.Text := self.pProduct.vmstrength;
+  if (self.pProduct.productdescription.description <> nil then
+    LMDRichEdit1.Text := self.pProduct.productdescription.description;
+
+  self.OpdaterStatus;
+end;
+
+procedure TFormRedigerProduct.ActAktiverExecute(Sender: TObject);
+begin
+  self.pProduct.status := true;
+  self.OpdaterStatus;
+end;
+
+
+procedure TFormRedigerProduct.ActDeaktiverExecute(Sender: TObject);
+begin
+  self.pProduct.status := false;
+  self.OpdaterStatus;
+end;
+
+procedure TFormRedigerProduct.ActGemLukExecute(Sender: TObject);
+begin
+  modalresult :=mrOk;
+end;
+
+procedure TFormRedigerProduct.ActLukExecute(Sender: TObject);
+begin
+  modalresult :=mrCancel;
+end;
+
+procedure TFormRedigerProduct.OpdaterStatus;
+begin
+  if (pProduct.status) then
+  begin
+     self.ActAktiver.Enabled  := false;
+     self.ActDeaktiver.Enabled := true;
+  end
+  else
+  begin
+    self.ActDeaktiver.Enabled := false;
+    self.ActAktiver.Enabled := true;
+  end;
+end;
+
+
+
+
+
+end.

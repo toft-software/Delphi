@@ -1,0 +1,80 @@
+object Form1: TForm1
+  Left = 0
+  Top = 0
+  Caption = 'Vetmall klient v 1.0'
+  ClientHeight = 108
+  ClientWidth = 649
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'Tahoma'
+  Font.Style = []
+  OldCreateOrder = False
+  Position = poScreenCenter
+  OnCreate = FormCreate
+  PixelsPerInch = 96
+  TextHeight = 13
+  object cxButton1: TcxButton
+    Left = 217
+    Top = 15
+    Width = 195
+    Height = 66
+    Action = ActKunder
+    TabOrder = 0
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -11
+    Font.Name = 'Tahoma'
+    Font.Style = []
+    ParentFont = False
+  end
+  object cxButton2: TcxButton
+    Left = 24
+    Top = 15
+    Width = 195
+    Height = 66
+    Action = ActVarer
+    TabOrder = 1
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -11
+    Font.Name = 'Tahoma'
+    Font.Style = []
+    ParentFont = False
+  end
+  object RESTClient1: TRESTClient
+    Accept = 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8'
+    BaseURL = 'http://localhost:55628/Vetmall.svc'
+    Params = <>
+    HandleRedirects = True
+    Left = 440
+    Top = 24
+  end
+  object RESTRequest1: TRESTRequest
+    Client = RESTClient1
+    Params = <>
+    Response = RESTResponse1
+    Left = 480
+    Top = 32
+  end
+  object ActionList1: TActionList
+    Left = 560
+    Top = 32
+    object ActVarer: TAction
+      Caption = 'Varer'
+      OnExecute = ActVarerExecute
+    end
+    object ActKunder: TAction
+      Caption = 'Kunder'
+      OnExecute = ActKunderExecute
+    end
+    object ActRabat: TAction
+      Caption = 'VMrabat'
+    end
+  end
+  object RESTResponse1: TRESTResponse
+    Left = 600
+    Top = 24
+  end
+end

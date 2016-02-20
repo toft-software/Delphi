@@ -1,0 +1,124 @@
+unit frmOpretCustomerGroup;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, clsGenHlp, cxGraphics, cxControls,
+  cxLookAndFeels, cxLookAndFeelPainters, cxContainer, cxEdit, dxSkinsCore,
+  dxSkinBlack, dxSkinBlue, dxSkinBlueprint, dxSkinCaramel, dxSkinCoffee,
+  dxSkinDarkRoom, dxSkinDarkSide, dxSkinDevExpressDarkStyle,
+  dxSkinDevExpressStyle, dxSkinFoggy, dxSkinGlassOceans, dxSkinHighContrast,
+  dxSkiniMaginary, dxSkinLilian, dxSkinLiquidSky, dxSkinLondonLiquidSky,
+  dxSkinMcSkin, dxSkinMetropolis, dxSkinMetropolisDark, dxSkinMoneyTwins,
+  dxSkinOffice2007Black, dxSkinOffice2007Blue, dxSkinOffice2007Green,
+  dxSkinOffice2007Pink, dxSkinOffice2007Silver, dxSkinOffice2010Black,
+  dxSkinOffice2010Blue, dxSkinOffice2010Silver, dxSkinOffice2013DarkGray,
+  dxSkinOffice2013LightGray, dxSkinOffice2013White, dxSkinPumpkin, dxSkinSeven,
+  dxSkinSevenClassic, dxSkinSharp, dxSkinSharpPlus, dxSkinSilver,
+  dxSkinSpringTime, dxSkinStardust, dxSkinSummer2008, dxSkinTheAsphaltWorld,
+  dxSkinsDefaultPainters, dxSkinValentine, dxSkinVisualStudio2013Blue,
+  dxSkinVisualStudio2013Dark, dxSkinVisualStudio2013Light, dxSkinVS2010,
+  dxSkinWhiteprint, dxSkinXmas2008Blue, Vcl.Menus, cxStyles, dxSkinscxPCPainter,
+  cxCustomData, cxFilter, cxData, cxDataStorage, cxNavigator, Data.DB, cxDBData,
+  cxGridLevel, cxGridCustomTableView, cxGridTableView, cxGridDBTableView,
+  cxClasses, cxGridCustomView, cxGrid, System.Actions, Vcl.ActnList,
+  Vcl.StdCtrls, cxButtons, cxTextEdit, clsCustomerGroup, clsObjModel;
+
+type
+  TformOpretCustomerGroup = class(TForm)
+    edKundegruppenavn: TcxTextEdit;
+    cxButDeaktiv: TcxButton;
+    ActionList1: TActionList;
+    actOpret: TAction;
+    grKunder: TcxGrid;
+    grKunderDBTableView1: TcxGridDBTableView;
+    grKunderDBTableView1groupname: TcxGridDBColumn;
+    grKunderLevel1: TcxGridLevel;
+    Dssource: TDataSource;
+    cxButton3: TcxButton;
+    actSlet: TAction;
+    procedure actOpretExecute(Sender: TObject);
+    procedure actSletExecute(Sender: TObject);
+  private
+    { Private declarations }
+    pCustomerGroupAll : TCustomerGroupListe;
+  public
+    { Public declarations }
+    procedure SetupAndShow;
+  end;
+
+var
+  formOpretCustomerGroup: TformOpretCustomerGroup;
+
+implementation
+uses frmSystemBesked;
+
+{$R *.dfm}
+procedure TformOpretCustomerGroup.actOpretExecute(Sender: TObject);
+var
+  tmpCustomerGroup : TCustomerGroup;
+  tmpFunkResult : TFunktionsResultat;
+begin
+  if (self.edKundegruppenavn.Text = '') then
+    formSystemBesked.SystemFejl('Gruppe navn er tomt - Prøv igen')
+  else if self.pCustomerGroupAll.GruppeNavnExists(self.edKundegruppenavn.Text) then
+    formSystemBesked.SystemFejl('Gruppe navn er allerede oprettet - Prøv igen')
+  else
+  begin
+    tmpCustomerGroup := TCustomerGroup.Create;
+    tmpCustomerGroup.Manufacturer.Manufacturer_id := FSModel.Manufacturer.Manufacturer_id;
+    tmpCustomerGroup.CustomerGroupDescription.Name := edKundegruppenavn.Text;
+    tmpFunkResult:=  tmpCustomerGroup.Insert;
+    if tmpFunkResult.Status = rsOk then
+    begin
+      tmpFunkResult.Free;
+      tmpCustomerGroup.Free;
+      self.pCustomerGroupAll.ClientDataSetCustomerGroupNameID.AppendRecord([edKundegruppenavn.Text,0]);
+    end;
+    self.edKundegruppenavn.Text := '';
+  end;
+end;
+
+procedure TformOpretCustomerGroup.actSletExecute(Sender: TObject);
+var
+  tmpCustomerGroup : TCustomerGroup;
+  tmpFunkResult : TFunktionsResultat;
+begin
+  if  (formSystemBesked.SystemSpoergsmaal('Ønsker du at slette '+ self.pCustomerGroupAll.ClientDataSet.FieldByName('name').AsString)) then
+  begin
+    tmpCustomerGroup := TCustomerGroup.Create;
+    tmpCustomerGroup.Customer_group_id := self.pCustomerGroupAll.ClientDataSet.FieldByName('id').AsInteger;
+    tmpFunkResult := tmpCustomerGroup.Delete;
+    if tmpFunkResult.Status = rsOk then
+    begin
+      tmpFunkResult.Free;
+      tmpCustomerGroup.Free;
+      self.pCustomerGroupAll.ClientDataSet.Delete;
+    end;
+  end;
+end;
+
+procedure TformOpretCustomerGroup.SetupAndShow;
+Var
+  tmpFunkResult : TFunktionsResultat;
+begin
+  self.pCustomerGroupAll:= TCustomerGroupListe.Create;
+  tmpFunkResult := self.pCustomerGroupAll.Load(FSModel.Manufacturer.Manufacturer_id);
+  if tmpFunkResult.Status = rsOk then
+  begin
+
+    tmpFunkResult.Free;
+    self.Dssource.DataSet := self.pCustomerGroupAll.ClientDataSetCustomerGroupNameID;
+  end;
+  self.ShowModal;
+  pCustomerGroupAll.Free;
+end;
+
+
+
+
+
+
+
+end.

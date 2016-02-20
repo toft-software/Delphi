@@ -1,0 +1,26 @@
+unit clsCustomersCustomergroups;
+interface
+
+uses Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, clsManufacturer,
+     clsGenHlp, clsObjModel, REST.JSON, clsCustomerGroup;
+
+type
+
+  TCustomersCustomergroups = class
+  Private
+    fid: Integer;
+    ffkcustomer_id: Integer;
+    ffkpraksisnr: Integer;
+    fcustomergroup : TCustomerGroup;
+
+  Public
+    Property Id: Integer read fid write fid;
+    Property Fkcustomer_id: Integer read ffkcustomer_id write ffkcustomer_id;
+    Property Fkpraksisnr: Integer read ffkpraksisnr write ffkpraksisnr;
+    Property Customergroup: TCustomerGroup read fcustomergroup write fcustomergroup;
+    //function Load: TFunktionsresultat;
+  end;
+
+implementation
+
+end.

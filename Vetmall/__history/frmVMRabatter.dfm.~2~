@@ -1,0 +1,111 @@
+object FormVMRabatter: TFormVMRabatter
+  Left = 0
+  Top = 0
+  Caption = 'Vetmall - rabatter'
+  ClientHeight = 461
+  ClientWidth = 1071
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'Tahoma'
+  Font.Style = []
+  OldCreateOrder = False
+  Position = poScreenCenter
+  DesignSize = (
+    1071
+    461)
+  PixelsPerInch = 96
+  TextHeight = 13
+  object grDelruteResultat: TcxGrid
+    Left = 22
+    Top = 21
+    Width = 971
+    Height = 404
+    Anchors = [akLeft, akTop, akRight, akBottom]
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -13
+    Font.Name = 'Arial'
+    Font.Style = []
+    ParentFont = False
+    TabOrder = 0
+    object grDRResultatDBTableView: TcxGridDBTableView
+      Navigator.Buttons.CustomButtons = <>
+      DataController.Summary.DefaultGroupSummaryItems = <>
+      DataController.Summary.FooterSummaryItems = <>
+      DataController.Summary.SummaryGroups = <>
+      OptionsCustomize.ColumnGrouping = False
+      OptionsCustomize.ColumnHiding = True
+      OptionsCustomize.ColumnsQuickCustomization = True
+      OptionsData.Deleting = False
+      OptionsData.Editing = False
+      OptionsData.Inserting = False
+      OptionsSelection.MultiSelect = True
+      OptionsView.GroupByBox = False
+      OptionsView.Indicator = True
+      object cxGridDBDRKundeGrpId: TcxGridDBColumn
+        Caption = 'Kundegruppe'
+        DataBinding.FieldName = 'kundegrpId'
+        PropertiesClassName = 'TcxLookupComboBoxProperties'
+        Properties.DropDownAutoSize = True
+        Properties.DropDownListStyle = lsFixedList
+        Properties.ImmediatePost = True
+        Properties.KeyFieldNames = 'id'
+        Properties.ListColumns = <
+          item
+            FieldName = 'navn'
+          end>
+        Properties.ListOptions.ShowHeader = False
+        Width = 178
+      end
+      object cxGridDBDRKategoriId: TcxGridDBColumn
+        Caption = 'Kategori'
+        DataBinding.FieldName = 'KategoriId'
+        PropertiesClassName = 'TcxLookupComboBoxProperties'
+        Properties.DropDownAutoSize = True
+        Properties.DropDownListStyle = lsFixedList
+        Properties.ImmediatePost = True
+        Properties.KeyFieldNames = 'id'
+        Properties.ListColumns = <
+          item
+            FieldName = 'Delrute'
+          end
+          item
+            FieldName = 'VognId'
+          end
+          item
+            FieldName = 'Dato'
+          end
+          item
+            MinWidth = 0
+            Width = 0
+            FieldName = 'DagNr'
+          end
+          item
+            MinWidth = 0
+            Width = 0
+            FieldName = 'RuteType'
+          end>
+        Properties.ListOptions.ShowHeader = False
+        VisibleForCustomization = False
+        Width = 196
+      end
+      object grDRResultatDBTableViewStarttid: TcxGridDBColumn
+        Caption = 'Start'
+        DataBinding.FieldName = 'Starttid'
+        PropertiesClassName = 'TcxDateEditProperties'
+        Width = 103
+      end
+      object grDRResultatDBTableViewSluttid: TcxGridDBColumn
+        Caption = 'Slut'
+        DataBinding.FieldName = 'Sluttid'
+        PropertiesClassName = 'TcxDateEditProperties'
+        Width = 116
+      end
+    end
+    object cxGridLevel1: TcxGridLevel
+      GridView = grDRResultatDBTableView
+    end
+  end
+end

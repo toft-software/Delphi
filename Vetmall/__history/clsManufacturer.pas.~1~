@@ -1,0 +1,26 @@
+unit clsManufacturer;
+interface
+
+uses Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes;
+
+type
+
+  TManufacturer = class
+  Private
+    pmanufacturer_id: Integer;
+    pname: String;
+    pimage: String;
+    psort_order: Integer;
+
+  Public
+    Property Manufacturer_id: Integer read pmanufacturer_id write pmanufacturer_id;
+    Property Name: String read pname write pname;
+    Property Image: String read pimage write pimage;
+    Property Sort_order: Integer read psort_order write psort_order;
+
+  end;
+  implementation
+
+
+end.
+

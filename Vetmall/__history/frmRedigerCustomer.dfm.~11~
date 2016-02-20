@@ -1,0 +1,415 @@
+object FormRedigerKunde: TFormRedigerKunde
+  Left = 0
+  Top = 0
+  Caption = 'VetMall klient'
+  ClientHeight = 471
+  ClientWidth = 889
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'Tahoma'
+  Font.Style = []
+  OldCreateOrder = False
+  Position = poScreenCenter
+  DesignSize = (
+    889
+    471)
+  PixelsPerInch = 96
+  TextHeight = 13
+  object edPraksisnr: TcxTextEdit
+    Left = 139
+    Top = 31
+    ParentFont = False
+    Style.Font.Charset = DEFAULT_CHARSET
+    Style.Font.Color = clWindowText
+    Style.Font.Height = -13
+    Style.Font.Name = 'Arial'
+    Style.Font.Style = []
+    Style.IsFontAssigned = True
+    TabOrder = 0
+    Width = 119
+  end
+  object edPraksisnavn: TcxTextEdit
+    Left = 139
+    Top = 63
+    ParentFont = False
+    Style.Font.Charset = DEFAULT_CHARSET
+    Style.Font.Color = clWindowText
+    Style.Font.Height = -13
+    Style.Font.Name = 'Arial'
+    Style.Font.Style = []
+    Style.IsFontAssigned = True
+    TabOrder = 1
+    Width = 285
+  end
+  object edAdr: TcxTextEdit
+    Left = 139
+    Top = 93
+    ParentFont = False
+    Style.Font.Charset = DEFAULT_CHARSET
+    Style.Font.Color = clWindowText
+    Style.Font.Height = -13
+    Style.Font.Name = 'Arial'
+    Style.Font.Style = []
+    Style.IsFontAssigned = True
+    TabOrder = 2
+    Width = 285
+  end
+  object cxLabel1: TcxLabel
+    Left = 50
+    Top = 34
+    Caption = 'Praksisnr.'
+    ParentFont = False
+    Style.Font.Charset = DEFAULT_CHARSET
+    Style.Font.Color = clWindowText
+    Style.Font.Height = -13
+    Style.Font.Name = 'Arial'
+    Style.Font.Style = []
+    Style.IsFontAssigned = True
+  end
+  object cxLabel2: TcxLabel
+    Left = 51
+    Top = 65
+    Caption = 'Praksisnavn'
+    ParentFont = False
+    Style.Font.Charset = DEFAULT_CHARSET
+    Style.Font.Color = clWindowText
+    Style.Font.Height = -13
+    Style.Font.Name = 'Arial'
+    Style.Font.Style = []
+    Style.IsFontAssigned = True
+  end
+  object cxLabel3: TcxLabel
+    Left = 455
+    Top = 39
+    Caption = 'Telefon'
+    ParentFont = False
+    Style.Font.Charset = DEFAULT_CHARSET
+    Style.Font.Color = clWindowText
+    Style.Font.Height = -13
+    Style.Font.Name = 'Arial'
+    Style.Font.Style = []
+    Style.IsFontAssigned = True
+  end
+  object cxLabel4: TcxLabel
+    Left = 456
+    Top = 68
+    Caption = 'Fax'
+    ParentFont = False
+    Style.Font.Charset = DEFAULT_CHARSET
+    Style.Font.Color = clWindowText
+    Style.Font.Height = -13
+    Style.Font.Name = 'Arial'
+    Style.Font.Style = []
+    Style.IsFontAssigned = True
+  end
+  object cxLabel5: TcxLabel
+    Left = 52
+    Top = 94
+    Caption = 'Adresse'
+    ParentFont = False
+    Style.Font.Charset = DEFAULT_CHARSET
+    Style.Font.Color = clWindowText
+    Style.Font.Height = -13
+    Style.Font.Name = 'Arial'
+    Style.Font.Style = []
+    Style.IsFontAssigned = True
+  end
+  object cxLabel6: TcxLabel
+    Left = 456
+    Top = 96
+    Caption = 'E-mail'
+    ParentFont = False
+    Style.Font.Charset = DEFAULT_CHARSET
+    Style.Font.Color = clWindowText
+    Style.Font.Height = -13
+    Style.Font.Name = 'Arial'
+    Style.Font.Style = []
+    Style.IsFontAssigned = True
+  end
+  object edTlf: TcxTextEdit
+    Left = 522
+    Top = 36
+    ParentFont = False
+    Style.Font.Charset = DEFAULT_CHARSET
+    Style.Font.Color = clWindowText
+    Style.Font.Height = -13
+    Style.Font.Name = 'Arial'
+    Style.Font.Style = []
+    Style.IsFontAssigned = True
+    TabOrder = 9
+    Width = 119
+  end
+  object edFax: TcxTextEdit
+    Left = 522
+    Top = 66
+    ParentFont = False
+    Style.Font.Charset = DEFAULT_CHARSET
+    Style.Font.Color = clWindowText
+    Style.Font.Height = -13
+    Style.Font.Name = 'Arial'
+    Style.Font.Style = []
+    Style.IsFontAssigned = True
+    TabOrder = 10
+    Width = 119
+  end
+  object edEmail: TcxTextEdit
+    Left = 522
+    Top = 96
+    ParentFont = False
+    Style.Font.Charset = DEFAULT_CHARSET
+    Style.Font.Color = clWindowText
+    Style.Font.Height = -13
+    Style.Font.Name = 'Arial'
+    Style.Font.Style = []
+    Style.IsFontAssigned = True
+    TabOrder = 11
+    Width = 228
+  end
+  object cxButAktiver: TcxButton
+    Left = 275
+    Top = 32
+    Width = 75
+    Height = 25
+    Action = ActAktiver
+    TabOrder = 12
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -13
+    Font.Name = 'Arial'
+    Font.Style = []
+    ParentFont = False
+  end
+  object cxButDeaktiv: TcxButton
+    Left = 349
+    Top = 32
+    Width = 75
+    Height = 25
+    Action = ActDeaktiver
+    TabOrder = 13
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -13
+    Font.Name = 'Arial'
+    Font.Style = []
+    ParentFont = False
+  end
+  object cxButton1: TcxButton
+    Left = 23
+    Top = 429
+    Width = 109
+    Height = 34
+    Action = ActGemLuk
+    Anchors = [akLeft, akBottom]
+    TabOrder = 14
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -13
+    Font.Name = 'Arial'
+    Font.Style = []
+    ParentFont = False
+  end
+  object cxButton2: TcxButton
+    Left = 790
+    Top = 421
+    Width = 83
+    Height = 34
+    Action = ActLuk
+    Anchors = [akRight, akBottom]
+    TabOrder = 15
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -13
+    Font.Name = 'Arial'
+    Font.Style = []
+    ParentFont = False
+  end
+  object cxLabel7: TcxLabel
+    Left = 52
+    Top = 129
+    Caption = 'Kundegruppe'
+    ParentFont = False
+    Style.Font.Charset = DEFAULT_CHARSET
+    Style.Font.Color = clWindowText
+    Style.Font.Height = -13
+    Style.Font.Name = 'Arial'
+    Style.Font.Style = []
+    Style.IsFontAssigned = True
+  end
+  object grKunder: TcxGrid
+    Left = 23
+    Top = 168
+    Width = 845
+    Height = 247
+    Anchors = [akLeft, akTop, akRight, akBottom]
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -13
+    Font.Name = 'Ariel'
+    Font.Style = []
+    ParentFont = False
+    TabOrder = 17
+    object grKunderDBTableView1: TcxGridDBTableView
+      Navigator.Buttons.CustomButtons = <>
+      DataController.DataSource = dscustomer
+      DataController.Summary.DefaultGroupSummaryItems = <>
+      DataController.Summary.FooterSummaryItems = <>
+      DataController.Summary.SummaryGroups = <>
+      OptionsCustomize.ColumnsQuickCustomization = True
+      OptionsData.Deleting = False
+      OptionsData.Editing = False
+      OptionsData.Inserting = False
+      OptionsSelection.MultiSelect = True
+      OptionsView.GroupByBox = False
+      object grKunderDBTableView1firstname: TcxGridDBColumn
+        Caption = 'Fornavn'
+        DataBinding.FieldName = 'firstname'
+        Options.Editing = False
+        Width = 119
+      end
+      object grKunderDBTableView1lastname: TcxGridDBColumn
+        Caption = 'Efternavn'
+        DataBinding.FieldName = 'lastname'
+        Options.Editing = False
+        Width = 143
+      end
+      object grKunderDBTableView1company: TcxGridDBColumn
+        Caption = 'Virksomhed'
+        DataBinding.FieldName = 'company'
+      end
+      object grKunderDBTableView1company_id: TcxGridDBColumn
+        Caption = 'CVR'
+        DataBinding.FieldName = 'company_id'
+      end
+      object grKunderDBTableView1address_1: TcxGridDBColumn
+        Caption = 'Adresse 1'
+        DataBinding.FieldName = 'address_1'
+      end
+      object grKunderDBTableView1address_2: TcxGridDBColumn
+        Caption = 'Adresse 2'
+        DataBinding.FieldName = 'address_2'
+      end
+      object grKunderDBTableView1city: TcxGridDBColumn
+        Caption = 'By'
+        DataBinding.FieldName = 'city'
+      end
+      object grKunderDBTableView1postcode: TcxGridDBColumn
+        Caption = 'Postnr'
+        DataBinding.FieldName = 'postcode'
+      end
+      object grKunderDBTableView1country: TcxGridDBColumn
+        Caption = 'Land'
+        DataBinding.FieldName = 'country'
+      end
+      object grKunderDBTableView1standardadresse: TcxGridDBColumn
+        Caption = 'Standard adresse'
+        DataBinding.FieldName = 'standardadr'
+        Width = 107
+      end
+    end
+    object grKunderLevel1: TcxGridLevel
+      GridView = grKunderDBTableView1
+    end
+  end
+  object cxCheckCb: TcxCheckComboBox
+    Left = 138
+    Top = 130
+    ParentFont = False
+    Properties.Items = <>
+    Style.Font.Charset = DEFAULT_CHARSET
+    Style.Font.Color = clWindowText
+    Style.Font.Height = -13
+    Style.Font.Name = 'Arial'
+    Style.Font.Style = []
+    Style.IsFontAssigned = True
+    TabOrder = 18
+    Width = 286
+  end
+  object btnNulstil: TcxButton
+    Left = 431
+    Top = 130
+    Width = 25
+    Height = 24
+    Action = actOpretCustomerGroup
+    Anchors = [akTop, akRight]
+    LookAndFeel.NativeStyle = True
+    OptionsImage.Glyph.Data = {
+      36050000424D3605000000000000360400002800000010000000100000000100
+      0800000000000001000000000000000000000001000000000000000000000101
+      0100020202000303030004040400050505000606060007070700080808000909
+      09000A0A0A000B0B0B000C0C0C000D0D0D000E0E0E000F0F0F00101010001111
+      1100121212001313130014141400151515001616160017171700181818001919
+      19001A1A1A001B1B1B001C1C1C001D1D1D001E1E1E001F1F1F00202020002121
+      2100222222002323230024242400252525002626260027272700282828002929
+      29002A2A2A002B2B2B002C2C2C002D2D2D002E2E2E002F2F2F00303030003131
+      3100323232003333330034343400353535003636360037373700383838003939
+      39003A3A3A003B3B3B003C3C3C003D3D3D003E3E3E003F3F3F00404040004141
+      4100424242004343430044444400454545004646460047474700484848004949
+      49004A4A4A004B4B4B004C4C4C004D4D4D004E4E4E004F4F4F00505050005151
+      5100525252005353530054545400555555005656560057575700585858005959
+      59005A5A5A005B5B5B005C5C5C005D5D5D005E5E5E005F5F5F00606060006161
+      6100626262006363630064646400656565006666660067676700686868006969
+      69006A6A6A006B6B6B006C6C6C006D6D6D006E6E6E006F6F6F00707070007171
+      7100727272007373730074747400757575007676760077777700787878007979
+      79007A7A7A007B7B7B007C7C7C007D7D7D007E7E7E007F7F7F00808080008181
+      8100828282008383830084848400858585008686860087878700888888008989
+      89008A8A8A008B8B8B008C8C8C008D8D8D008E8E8E008F8F8F00909090009191
+      9100929292009393930094949400959595009696960097979700989898009999
+      99009A9A9A009B9B9B009C9C9C009D9D9D009E9E9E009F9F9F00A0A0A000A1A1
+      A100A2A2A200A3A3A300A4A4A400A5A5A500A6A6A600A7A7A700A8A8A800A9A9
+      A900AAAAAA00ABABAB00ACACAC00ADADAD00AEAEAE00AFAFAF00B0B0B000B1B1
+      B100B2B2B200B3B3B300B4B4B400B5B5B500B6B6B600B7B7B700B8B8B800B9B9
+      B900BABABA00BBBBBB00BCBCBC00BDBDBD00BEBEBE00BFBFBF00C0C0C000C1C1
+      C100C2C2C200C3C3C300B8BBC700ADB3CB00A3ACCF0099A5D300909ED6007086
+      DE004969E7002950EE001642F3000D3BF5000838F6000536F7000435F8000335
+      F8000334F8000334F9000334F9000334F8000334F7000334F6000434F4000434
+      F1000433EF000433ED000533EB000533E9000533E7000632E4000632E1000632
+      DE000632DD000632DD000632DD000632DD000731DD000831DD000C30DE00132F
+      DF00202CE1004625E6007C1AED00CC0AF800EC04FC00F901FE00FD00FE00FE00
+      FE00FE00FE00FE00FE00FE00FE00FE00FE00FE00FE00FE00FE00FE00FE00FE00
+      FE00FE00FE00FE00FE00FE00FE00FE00FE00FE00FE00FE00FE00F7F7F7F7F7F7
+      F7F7F7F7F7F7F7F7E1E1F7E1E1F7F7F7F7F7F7F7F7F7F7E1E1F7F7E1E1E1F7F7
+      F7F7F7F7F7F7E1E1F7F7F7E1E3E1E1F7F7F7F7F7F7E1E1F7F7F7F7F7DBE1E1E1
+      F7F7F7F7E1E1F7F7F7F7F7F7F7F7E1E1E3F7E3E1E1F7F7F7F7F7F7F7F7F7F7E3
+      DEDEDDE3F7F7F7F7F7F7F7F7F7F7F7F7DFDFDAF7F7F7F7F7F7F7F7F7F7F7F7E3
+      DBDDDAD8F7F7F7F7F7F7F7F7F7F7D8DADCF7F7D8D1F7F7F7F7F7F7F7F7D1DAD5
+      F7F7F7F7D1D1F7F7F7F7F7F7D1D1D1F7F7F7F7F7F7D1D1F7F7F7F7D1D1D1F7F7
+      F7F7F7F7F7F7F7D1F7F7D1D1D1F7F7F7F7F7F7F7F7F7F7F7F7F7D1D1F7F7F7F7
+      F7F7F7F7F7F7F7F7F7F7F7F7F7F7F7F7F7F7F7F7F7F7F7F7F7F7}
+    ParentShowHint = False
+    ShowHint = True
+    TabOrder = 19
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -13
+    Font.Name = 'Ariel'
+    Font.Style = []
+    ParentFont = False
+  end
+  object ActionList1: TActionList
+    Left = 840
+    Top = 32
+    object ActAktiver: TAction
+      Caption = 'Aktiver'
+    end
+    object ActDeaktiver: TAction
+      Caption = 'Deaktiver'
+    end
+    object ActGemLuk: TAction
+      Caption = 'Gem & Luk (F10)'
+      OnExecute = ActGemLukExecute
+    end
+    object ActLuk: TAction
+      Caption = 'Luk (F10)'
+      ShortCut = 121
+      OnExecute = ActLukExecute
+    end
+    object actOpretCustomerGroup: TAction
+    end
+  end
+  object dscustomer: TDataSource
+    Left = 840
+    Top = 80
+  end
+end

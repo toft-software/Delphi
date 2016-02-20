@@ -1,0 +1,116 @@
+unit clsDBHlp;
+
+interface
+
+uses db;
+
+Type
+
+  TDBHlp = class
+  Private
+
+  Public
+//     class function DBFloatOrNull(aFld: TField): String;
+     class function DBDateOr0(aFld: TField): TDAteTime;overload;
+     class function DBDateOr0(aDateVal: Variant): TDAteTime;overload;
+     Class Procedure AddToFilterAnd(var aFilter:String; aClause: String);
+     Class Procedure AddToFilterOr(var aFilter:String; aClause: String);
+     class function BoolToValStr(aBoolVal: Boolean): String;
+     class function DBValidStr(aStr: String):String;
+  End;
+
+implementation
+
+uses { SSDStringUtils,}variants;
+
+{ TDBHlp }
+
+class procedure TDBHlp.AddToFilterAnd(var aFilter: String; aClause: String);
+begin
+  if aFilter='' then
+  Begin
+    aFilter:=aClause;
+  End
+  Else
+  Begin
+     aFilter:=aFilter+' AND '+AClause;
+  End;
+end;
+
+class procedure TDBHlp.AddToFilterOr(var aFilter: String; aClause: String);
+begin
+  if aFilter='' then
+  Begin
+    aFilter:=aClause;
+  End
+  Else
+  Begin
+     aFilter:=aFilter+' OR '+AClause;
+  End;
+end;
+
+
+class function TDBHlp.BoolToValStr(aBoolVal: Boolean): String;
+begin
+  if aBoolVal then
+  Begin
+    result:='1';
+  end
+  Else
+  Begin
+    result:='0';
+  End;
+end;
+
+class function TDBHlp.DBDateOr0(aFld: TField): TDAteTime;
+begin
+  if aFld.isNull then
+  Begin
+    result:=0;
+  End
+  Else
+  Begin
+     result:=aFld.AsDateTime;
+  End;
+end;
+
+class function TDBHlp.DBDateOr0(aDateVal: Variant): TDAteTime;
+begin
+  if VarIsNull(aDAteVal) then
+  Begin
+    result:=0;
+  End
+  Else
+  Begin
+     result:=VarToDateTime(aDateVal);
+  End;
+end;
+
+//class function TDBHlp.DBFloatOrNull(aFld: TField): String;
+//begin
+//  if aFld.IsNull then
+//    result:='null'
+//  else
+//    result:=KommaToDecimalKomma(afld.asstring);
+//end;
+
+
+class function TDBHlp.DBValidStr(aStr: String): String;
+Var
+  i: Integer;
+begin
+   result:='';
+   for i:=1 to length(aStr) do
+   Begin
+      if aStr[i]='''' then
+      Begin
+         result:=result+'''''';
+      End
+      Else
+      Begin
+         result:=result+aStr[i];
+      End;
+   End;
+end;
+
+end.
